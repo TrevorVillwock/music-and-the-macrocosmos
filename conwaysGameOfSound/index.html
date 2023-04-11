@@ -1,0 +1,52 @@
+<!--
+    Basic HTML Terminology 
+    
+    Tags - The first word within the angled brackets (<html>, <div>, etc.)
+    Attributes - The parameters set inside the brackets like class and onmouseover
+-->
+
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.53/Tone.js"></script>
+        <script src="./conwaysGameOfSound.js"></script>
+        <link href="./style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="popup" class="modal" style="display:block">
+            <div id="modal-content">
+                <span id="start-box" class="close" onclick="closeModal()">Click to start</span>
+            </div>
+        </div>
+            <input type="text" class="preset-controls" id="preset-input">
+            <button class="preset-controls" id="save-preset-button">Save preset</button>
+            <select id="preset-menu" class="preset-controls" onchange="loadPreset()"></select>
+        </div>
+        <div id="row">
+            <div id="column">
+                <div class="container" id="grid"></div>
+            </div>
+            <div id="column">
+                <h id="title">
+                    Conway's Game of Sound
+                </h>
+                <div id="description">
+                    <p>Conway's Game of Life is a type of cellular automaton invented by the British mathmetician John Conway in 1970. 
+                    <p>Cellular automata are mathematical systems defined by a set of cells that interact with the cells around them according to a set of rules.</p>
+                    <p>Each cell has its own state defined by a certain number of parameters; in Conway's Game of Life the cells have only one parameter, which is whether they are "alive." </p>
+                    <p>The rules according to <a href="http://www.conwaylife.com">conwaylife.com</a> are as follows:</p>
+                    <ul></ul>
+                        <li>Any live cell with fewer than two live neighbours dies (referred to as underpopulation).</li>
+                        <li>Any live cell with more than three live neighbours dies (referred to as overpopulation).</li>
+                        <li>Any live cell with two or three live neighbours lives, unchanged, to the next generation.</li>
+                        <li>Any dead cell with exactly three live neighbours comes to life.</li>
+                    <p>The Game of Life is a 2D automaton, but cellular automata with any number of dimensions are possible.</p>
+                    <p>Click a square to make it alive. Once you have created the pattern you want, press the spacebar to begin running the clock.</p>
+                    <p>Pressing the spacebar again will stop the clock.</p>
+                    <p>Each square is mapped to a note of the G major pentatonic scale.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
