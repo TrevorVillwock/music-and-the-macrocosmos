@@ -6,11 +6,6 @@ let notesClock;
 let gridClock;
 let clockId;
 const TEMPO = 1000; // milliseconds per clock tick
-let presets = {}; // dictionary of supplied and user created presets which themselves are dictionaries
-                  // will eventually convert this to save presets in a json file
-let savePresetButton;
-let presetMenu;
-let presetInput;
 
 // Create a 2D Array to represent the current state of the grid for conway's game of life
 let currentSquares = Array(ROWS);
@@ -82,13 +77,6 @@ window.onload = () => {
 
     presetMenu = document.getElementById("preset-menu");
     presetInput = document.getElementById("preset-input");
-
-    savePresetButton = document.getElementById("save-preset-button");
-    savePresetButton.addEventListener("click", () => {
-        let presetName = presetInput.value
-        console.log(`saving ${presetName}`);
-        savePreset(presetName);
-    });
 
     for (let i = 0; i < COLUMNS; ++i) {
         let octave = 2 + i % octaves;
@@ -205,47 +193,9 @@ function start() {
     advanceClock();
     clockId = setInterval(advanceClock, TEMPO);
     console.log(`clockId: ${clockId}`);
-};
+}
 
 function stop() {
     running = false;
     clearInterval(clockId);
-}
-
-function savePreset(name) {
-    let boardState = {};
-    for (let i = 0; i < COLUMNS; ++i) {
-        for (let j = 0; j < ROWS; ++j) {
-            let squareId = `r${i}c${j}`;
-
-            // array method
-            boardState[squareId] = currentSquares[i][j].alive;
-        }
-    }
-    presets[name] = boardState;
-    console.log(presets);
-
-    console.log(`presetMenu.options.length: ${presetMenu.options.length}`)
-
-    presetMenu.options[presetMenu.options.length] = new Option(name);
-}
-
-function loadPreset() {
-    let presetName = presetMenu.value;
-    console.log(`presetName: ${presetName}`)
-    console.log(presets[presetName]);
-
-    // json method
-    // fetch("./presets.json").then((response)=>response.json()).then((json) => console.log(json));
-
-    // array method
-    for (let i = 0; i < COLUMNS; ++i) {
-        for (let j = 0; j < ROWS; ++j) { 
-            currentSquares[i][j].alive = presets[presetName][`r${i}c${j}`];
-            if (currentSquares[i][j].alive) 
-                currentSquares[i][j].html.style.backgroundColor = "green";
-            else
-                currentSquares[i][j].html.style.backgroundColor = "blue";
-        }
-    }
 }
