@@ -1,0 +1,37 @@
+<!--
+    Basic HTML Terminology 
+    
+    Tags - The first word within the angled brackets (<html>, <div>, etc.)
+    Attributes - The parameters set inside the brackets like class and onmouseover
+-->
+
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.53/Tone.js"></script>
+        <script src="./soundscapes.js"></script>
+        <link href="./style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="popup" class="modal" style="display:block">
+            <div id="modal-content">
+                <span id="start-box" class="close" onclick="closeModal()">Click to start</span>
+            </div>
+        </div>
+        <div id="square-1" class="square" onmouseover="playSquare1()" onmouseleave="stopSquare1()"></div>
+        <div id="square-2" class="square" onmouseover="playSquare2()" onmouseleave="stopSquare2()"></div>
+        <div id="square-3" class="square" onmouseover="playSquare3()" onmouseleave="stopSquare3()"></div>
+        <div id="square-4" class="square" onmouseover="playSquare4()" onmouseleave="stopSquare4()"></div>
+        <div id="square-5" class="square" onmouseover="playSquare5()" onmouseleave="stopSquare5()"></div>
+        <div id="square-6" class="square" onmouseover="playSquare6()" onmouseleave="stopSquare6()"></div>
+        <div id="square-7" class="square" onmouseover="playSquare7()" onmouseleave="stopSquare7()"></div>
+        <div id="square-8" class="square" onmouseover="playSquare8()" onmouseleave="stopSquare8()"></div>
+        <div id="controls">
+            <p>Hover over a square to hear sine waves of various pitches with copious amounts of reverb.</p>
+            <p>Press the shift key to control each square's pitch by moving vertically.</p>
+            <p>Volume</p>
+            <input type="range" min="0" max="200" value="0" id="volumeSlider" oninput="setVolume()">
+        </div>
+    </body>
+</html>
