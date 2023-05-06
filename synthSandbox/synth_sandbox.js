@@ -43,7 +43,7 @@ let noteLength = "+0.5"; // in seconds
 // toDestination() connects the sound produced to your computer headphones/speakers
 const mainVol = new Tone.Volume(-25).toDestination();
 const sawSynth = new Tone.AMOscillator(100, "sawtooth64", "sine", 0.1);
-const filter = new Tone.Filter(1500, "lowpass");
+const filter = new Tone.Filter(2000, "lowpass");
 const delay = new Tone.FeedbackDelay("8n", 0.5);
 delay.maxDelay = 5;
 
@@ -57,6 +57,7 @@ delay.connect(mainVol);
 const lfo1 = new Tone.LFO(0, 1, 2);
 let lfoRange = 1;
 lfo1.connect(sawSynth.frequency);
+lfo1.set({max: 100, min: 100});
 lfo1.start();
 
 // Boolean variable indicating whether randomness is turned on or off
@@ -113,43 +114,33 @@ function setPitch() {
 
 function updateSettings() {
     
-    console.log("cancelling Transport");
     Tone.Transport.cancel(clock);
-    console.log("transport cancelled");
-    console.log("setting new clock");
 
     if (randomSpeed && randomPitch) {
-        console.log("both");
         clock = Tone.Transport.scheduleRepeat(() => {
             setLfoRange();
             Tone.Transport.bpm.value = 40 + Math.random() * 360;
             sawSynth.start();
             sawSynth.stop(noteLength);
-            console.log("playing from randomSpeed & randomPitch");
         }, rhythmMenu.value, "0s");
     } else if (randomSpeed) {
         clock = Tone.Transport.scheduleRepeat(() => {
             Tone.Transport.bpm.value = 40 + Math.random() * 360;
             sawSynth.start();
             sawSynth.stop(noteLength);
-            console.log("playing from randomSpeed");
         }, rhythmMenu.value, "0s");
     } else if (randomPitch) {
         clock = Tone.Transport.scheduleRepeat(() => {
             setLfoRange();
             sawSynth.start();
             sawSynth.stop(noteLength);
-            console.log("playing from randomPitch");
         }, rhythmMenu.value, "0s");
     } else {
         clock = Tone.Transport.scheduleRepeat(() => {
             sawSynth.start();
             sawSynth.stop(noteLength);
-            console.log("playing normally");
         }, rhythmMenu.value, "0s");
     }
-
-    console.log("new clock set");
 }
 
 function setLfoRange() {
@@ -158,8 +149,8 @@ function setLfoRange() {
     let lfoTop = (parseInt(pitchSlider.value) + note) * lfoRange;
     let lfoBottom = (parseInt(pitchSlider.value) + note) / lfoRange;
     lfo1.set({min: lfoBottom, max: lfoTop});
-    console.log("lfo top: " + lfoTop);
-    console.log("lfo bottom: " + lfoBottom);
+    // console.log("lfo top: " + lfoTop);
+    // console.log("lfo bottom: " + lfoBottom);
     lfoRangeNumber.value = lfoRangeSlider.value;
 }
 
@@ -170,20 +161,17 @@ function setLfoFreq() {
 }
 
 function toggleRandomSpeed() {
-    //console.log("toggling random speed");
     randomSpeed = !randomSpeed;
     updateSettings();
 }
 
 function toggleRandomPitch() {
-    //console.log("toggling random pitch");
     randomPitch = !randomPitch;
     updateSettings();
 }
 
 function setRhythm() {
     updateSettings(); 
-    //console.log("set rhythmic value");
 }
 
 function setFilterCutoff() {
@@ -200,7 +188,6 @@ function setFilterCutoff() {
 function setAMFreq() {
     sawSynth.set({harmonicity: amSlider.value});
     amNumber.value = amSlider.value;
-    // console.log("set AM frequency");
 }
 
 function setDelayTime() {
@@ -223,9 +210,6 @@ function setDelayVolume() {
 
 function closeModal() {
     let modal = document.getElementById("popup");
-    /* console.log("modal:")
-    console.log(modal)
-    console.log("closing modal"); */
     modal.style.display="none";
     Tone.start();
 }
