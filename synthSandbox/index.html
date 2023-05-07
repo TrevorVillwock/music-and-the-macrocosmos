@@ -46,11 +46,10 @@
                     <input class="number-box" type="number" min="20" max="20000" value="1500" id="filterNumber" readonly>
                     <span>Hz</span>
                 </div>
-                <h2>Amplitude Modulation Frequency</h2>
+                <h2>Amplitude Modulation Harmonicity</h2>
                 <div>
                     <input type="range" min="0.5" max="5" step=0.1 value="0.5" id="amSlider" class="control-slider" oninput="setAMFreq()">
                     <input class="number-box" type="number" min="20" max="20000" value="0" id="amNumber" readonly>
-                    <span>Hz</span>
                 </div>
             </div>
             <div class="column">
@@ -59,13 +58,13 @@
                     <p>Frequency</p>
                     <div>
                         <input type="range" min="2" max="20" step="0.1" value="0.0" id="lfoFreqSlider" class="control-slider" oninput="setLfoFreq()">
-                        <input class="number-box" type="number" min="20" max="20000" value="20" id="lfoFreqNumber" readonly>
+                        <input class="number-box" type="number" min="20" max="20000" value="0" id="lfoFreqNumber" readonly>
                         <span>Hz</span>
                     </div>
                     <p>Range</p>
                     <div>
-                        <input type="range" min="1.0" max="2.0" step="0.01" value="1.0" id="lfoRangeSlider" class="control-slider" oninput="setLfoRange()">
-                        <input class="number-box" type="number" min="20" max="20000" value="20" id="lfoRangeNumber" readonly>
+                        <input type="range" min="1.0" max="2.0" step="0.01" value="0.0" id="lfoRangeSlider" class="control-slider" oninput="setLfoRange()">
+                        <input class="number-box" type="number" min="20" max="20000" value="0" id="lfoRangeNumber" readonly>
                         <span>Hz</span>
                     </div>
                 </div>
