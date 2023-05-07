@@ -1,0 +1,3 @@
+[submodule "hexGrid"]
+	path = hexGrid
+	url = https://github.com/eric-mulhern/solo-project
