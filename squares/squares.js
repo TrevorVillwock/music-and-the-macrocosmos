@@ -9,6 +9,7 @@ let greenSquare;
 let redSquare;
 let yellowSquare;
 let currentSquare; // Holds square object mouse is currently hovering over
+const frequencies = [200, 300, 400, 500, 600, 700, 800, 900]; // starting pitches of the squares in Hertz
 
 // Attack Decay Sustain Release (ADSR) Envelope used for all synthesizers
 let synthEnvelope = {
@@ -26,14 +27,28 @@ let controlPitch = false;
 
 document.onkeydown = (event) => {
     console.log(event);
-    if (event.key == "Shift") controlPitch = !controlPitch;
-    console.log(controlPitch);
+    if (event.key == "Shift") {
+        controlPitch = !controlPitch;
+        console.log("changed control of pitch");
+    } else if (event.key == " ") {
+        console.log("reset pitches");
+        controlPitch = false;
+        square1.synth.frequency.value = square1.baseFrequency;
+        square2.synth.frequency.value = square2.baseFrequency;
+        square3.synth.frequency.value = square3.baseFrequency;
+        square4.synth.frequency.value = square4.baseFrequency;
+        square5.synth.frequency.value = square5.baseFrequency;
+        square6.synth.frequency.value = square6.baseFrequency;
+        square7.synth.frequency.value = square7.baseFrequency;
+        square8.synth.frequency.value = square8.baseFrequency;
+    } 
 }
 
 document.onmousemove = (event) => {
-    console.log("horizontal position: " + event.clientX);
-    console.log("vertical position: " + event.clientY);
+    //console.log("horizontal position: " + event.clientX);
+    //console.log("vertical position: " + event.clientY);
     if (controlPitch) {
+        console.log("controlling pitch");
         currentSquare.synth.frequency.value = currentSquare.baseFrequency - (event.clientY - currentSquare.top) / 2;
     }
 }
@@ -73,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         envelope: synthEnvelope
     }).connect(reverb),
-        baseFrequency: 200,
+        baseFrequency: frequencies[0],
         top: 0,
         left: 0,
     }
@@ -87,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             envelope: synthEnvelope
         }).connect(reverb),
-        baseFrequency: 300,
+        baseFrequency: frequencies[1],
         top: 0,
         left: 250
     }
@@ -101,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             envelope: synthEnvelope
         }).connect(reverb),
-        baseFrequency: 400,
+        baseFrequency: frequencies[2],
         top: 0,
         left: 500
     }
@@ -115,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             envelope: synthEnvelope
         }).connect(reverb),
-        baseFrequency: 500,
+        baseFrequency: frequencies[3],
         top: 0,
         left: 750
     }
@@ -129,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             envelope: synthEnvelope
         }).connect(reverb),
-        baseFrequency: 600,
+        baseFrequency: frequencies[4],
         top: 250,
         left: 0
     }
@@ -143,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 
             envelope: synthEnvelope
         }).connect(reverb),
-        baseFrequency: 700,
+        baseFrequency: frequencies[5],
         top: 250,
         left: 250
     }
@@ -157,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             envelope: synthEnvelope
         }).connect(reverb),
-        baseFrequency: 800,
+        baseFrequency: frequencies[6],
         top: 250,
         left: 500
     }
@@ -171,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             envelope: synthEnvelope
         }).connect(reverb),
-        baseFrequency: 900,
+        baseFrequency: frequencies[7],
         top: 250,
         left: 750
     }
@@ -275,6 +290,7 @@ function setVolume() {
     }
 }
 
+// Close "Click to start" window
 function closeModal() {
     let modal = document.getElementById("popup");
     console.log("modal:")
