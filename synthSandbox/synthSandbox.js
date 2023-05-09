@@ -1,14 +1,20 @@
+// Trevor Villwock 2022-2023
+// Tone.js documentation: https://tonejs.github.io/docs/14.7.77/index.html
+
+/* This program introduces basic modular synthesis concepts like oscillators, filters, low 
+frequency oscillators (LFOs), and delay. */
+
 let mainVolSlider;
 let pitchSlider;
 let cutoffSlider;
-let lfoFreqSlider;
-let lfoRangeSlider;
+let vibratoFreqSlider;
+let vibratoRangeSlider;
 let rhythmMenu;
 let pitchNumber;
 let filterNumber;
 let amNumber;
-let lfoRangeNumber;
-let lfoFreqNumber;
+let vibratoRangeNumber;
+let vibratoFreqNumber;
 let delayTimeSlider;
 let delayTimeNumber;
 let delayFeedbackSlider;
@@ -20,14 +26,14 @@ window.onload = function () {
     pitchSlider = document.getElementById("pitchSlider");
     cutoffSlider = document.getElementById("cutoffSlider");
     amSlider = document.getElementById("amSlider");
-    lfoFreqSlider = document.getElementById("lfoFreqSlider");
-    lfoRangeSlider = document.getElementById("lfoRangeSlider");
+    vibratoFreqSlider = document.getElementById("vibratoFreqSlider");
+    vibratoRangeSlider = document.getElementById("vibratoRangeSlider");
     rhythmMenu = document.getElementById("notes");
     pitchNumber = document.getElementById("pitchNumber");
     filterNumber = document.getElementById("filterNumber");
     amNumber = document.getElementById("amNumber");
-    lfoFreqNumber = document.getElementById("lfoFreqNumber");
-    lfoRangeNumber = document.getElementById("lfoRangeNumber");
+    vibratoFreqNumber = document.getElementById("vibratoFreqNumber");
+    vibratoRangeNumber = document.getElementById("vibratoRangeNumber");
     delayTimeSlider = document.getElementById("delayTimeSlider");
     delayTimeNumber = document.getElementById("delayTimeNumber");
     delayFeedbackSlider = document.getElementById("delayFeedbackSlider");
@@ -54,6 +60,14 @@ filter.connect(delay);
 filter.connect(mainVol);
 delay.connect(mainVol);
 
+/* We use an Low Frequency Oscillator (LFO) to create vibrato. 
+An LFO is usually defined as an oscillator that modulates (changes) some aspect of the
+sound like volume or pitch at a rate lower than 20 Hertz, which is the lowest 
+we can hear. In practice however, oscillating a parameter faster than 20 Hertz
+can often lead to interesting effects so this shouldn't be seen as a limit.
+
+For more see https://tonejs.github.io/docs/14.7.77/LFO */ 
+
 const lfo1 = new Tone.LFO(0, 1, 2);
 let lfoRange = 1;
 lfo1.connect(sawSynth.frequency);
@@ -73,8 +87,6 @@ let clock = Tone.Transport.scheduleRepeat(() => {
     sawSynth.stop(noteLength);
 }, "4n");
 
-console.log(`clock: ${clock}`);
-
 // Run when start button is clicked
 function start() {
     Tone.Transport.start();
@@ -82,12 +94,10 @@ function start() {
 
 // Run when the stop button is clicked
 function stop() {
-    //Tone.stop();
     Tone.Transport.stop();
 }
 
 function setMainVolume() {
-    
     /************************************************************
     The html slider gives us values 0-200, which we map
     to be between -100 and 0 dB because that's what the
@@ -103,9 +113,6 @@ function setMainVolume() {
 }
 
 function setPitch() {
-    //console.log("setting pitch with LFO");
-    //console.log("slider value: " + pitchSlider.value);
-
     let lfoTop = parseInt(pitchSlider.value) * lfoRange;
     let lfoBottom = parseInt(pitchSlider.value) / lfoRange;
     lfo1.set({max: lfoTop, min: lfoBottom});
@@ -113,12 +120,11 @@ function setPitch() {
 }
 
 function updateSettings() {
-    
     Tone.Transport.cancel(clock);
 
     if (randomSpeed && randomPitch) {
         clock = Tone.Transport.scheduleRepeat(() => {
-            setLfoRange();
+            setVibratoRange();
             Tone.Transport.bpm.value = 40 + Math.random() * 360;
             sawSynth.start();
             sawSynth.stop(noteLength);
@@ -131,7 +137,7 @@ function updateSettings() {
         }, rhythmMenu.value, "0s");
     } else if (randomPitch) {
         clock = Tone.Transport.scheduleRepeat(() => {
-            setLfoRange();
+            setVibratoRange();
             sawSynth.start();
             sawSynth.stop(noteLength);
         }, rhythmMenu.value, "0s");
@@ -143,20 +149,18 @@ function updateSettings() {
     }
 }
 
-function setLfoRange() {
-    lfoRange = lfoRangeSlider.value;
+function setVibratoRange() {
+    lfoRange = vibratoRangeSlider.value;
     let note = notes[Math.floor(Math.random() * notes.length)]
     let lfoTop = (parseInt(pitchSlider.value) + note) * lfoRange;
     let lfoBottom = (parseInt(pitchSlider.value) + note) / lfoRange;
     lfo1.set({min: lfoBottom, max: lfoTop});
     // console.log("lfo top: " + lfoTop);
     // console.log("lfo bottom: " + lfoBottom);
-    lfoRangeNumber.value = lfoRangeSlider.value;
 }
 
-function setLfoFreq() {
-    lfo1.set({frequency: Math.log2(lfoFreqSlider.value) - 1});
-    lfoFreqNumber.value = Math.log2(lfoFreqSlider.value) - 1;
+function setVibratoFreq() {
+    lfo1.set({frequency: Math.log2(vibratoFreqSlider.value) - 1});
     // console.log(`lfo frequency: ${lfo1.frequency.value}`);
 }
 
@@ -186,6 +190,10 @@ function setFilterCutoff() {
 }
 
 function setAMFreq() {
+    /* From the Tone.js docs:
+    Harmonicity is the frequency ratio between the carrier and the modulator oscillators. 
+    A harmonicity of 1 gives both oscillators the same frequency. 
+    Harmonicity = 2 means a change of an octave. */
     sawSynth.set({harmonicity: amSlider.value});
     amNumber.value = amSlider.value;
 }
@@ -201,7 +209,6 @@ function setDelayFeedback() {
 }
 
 function setDelayVolume() { 
-
     // The "dry" signal is the signal without effects, and the "wet" signal is the signal with effects
     // 0.0 is a totally dry signal, and 1.0 is totally wet signal
     // For the delay, 1.0 means that the first echo will be the exact same volume as the initial sound. 
