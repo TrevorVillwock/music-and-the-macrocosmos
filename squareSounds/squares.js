@@ -1,13 +1,12 @@
+// Trevor Villwock 2022-2023
+// Tone.js documentation: https://tonejs.github.io/docs/14.7.77/index.html
+
 // Declare variables here so they have the right scope
 let startButton;
 let volSlider;
 let vol;
 let span;
 let reverb;
-let blueSquare;
-let greenSquare;
-let redSquare;
-let yellowSquare;
 let currentSquare; // Holds square object mouse is currently hovering over
 const frequencies = [200, 300, 400, 500, 600, 700, 800, 900]; // starting pitches of the squares in Hertz
 

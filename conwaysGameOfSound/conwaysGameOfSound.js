@@ -1,3 +1,6 @@
+// Trevor Villwock 2022-2023
+// Tone.js documentation: https://tonejs.github.io/docs/14.7.77/index.html
+
 let grid; // will eventually hold html element to which all grid squares are attached as children
 const ROWS = 10;
 const COLUMNS = 10;
