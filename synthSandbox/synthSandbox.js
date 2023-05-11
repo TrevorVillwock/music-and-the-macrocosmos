@@ -9,7 +9,6 @@ let pitchSlider;
 let cutoffSlider;
 let vibratoFreqSlider;
 let vibratoRangeSlider;
-let rhythmMenu;
 let pitchNumber;
 let filterNumber;
 let amNumber;
@@ -21,14 +20,13 @@ let delayFeedbackSlider;
 let delayFeedbackNumber;
 let delayVolSlider;
 
-window.onload = function () {
+window.onload = () => {
     mainVolSlider = document.getElementById("mainVolumeSlider");
     pitchSlider = document.getElementById("pitchSlider");
     cutoffSlider = document.getElementById("cutoffSlider");
     amSlider = document.getElementById("amSlider");
     vibratoFreqSlider = document.getElementById("vibratoFreqSlider");
     vibratoRangeSlider = document.getElementById("vibratoRangeSlider");
-    rhythmMenu = document.getElementById("notes");
     pitchNumber = document.getElementById("pitchNumber");
     filterNumber = document.getElementById("filterNumber");
     amNumber = document.getElementById("amNumber");
@@ -90,6 +88,7 @@ let clock = Tone.Transport.scheduleRepeat(() => {
 // Run when start button is clicked
 function start() {
     Tone.Transport.start();
+    updateSettings();
 }
 
 // Run when the stop button is clicked
@@ -125,27 +124,49 @@ function updateSettings() {
     if (randomSpeed && randomPitch) {
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            Tone.Transport.bpm.value = 40 + Math.random() * 360;
-            sawSynth.start();
+            Tone.Transport.bpm.value = 100 + Math.random() * 360;
+            try {
+                sawSynth.start();
+            } catch (error) {
+                // When the tempo increases, the Tone Transport object
+                // might throw an error that the next sound tried to play 
+                // exactly at the same time or before the previous sound. 
+                // This can be safely ignored for now however, and we can
+                // use a try...catch statement to handle the error safely.  
+                console.log(error);
+            }
+            
             sawSynth.stop(noteLength);
-        }, rhythmMenu.value, "0s");
+        }, "8n", "0s");
     } else if (randomSpeed) {
         clock = Tone.Transport.scheduleRepeat(() => {
-            Tone.Transport.bpm.value = 40 + Math.random() * 360;
-            sawSynth.start();
+            Tone.Transport.bpm.value = 100 + Math.random() * 360;
+            try {
+                sawSynth.start();
+            } catch (error) {
+                console.log(error);
+            }
             sawSynth.stop(noteLength);
-        }, rhythmMenu.value, "0s");
+        }, "8n", "0s");
     } else if (randomPitch) {
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            sawSynth.start();
+            try {
+                sawSynth.start();
+            } catch (error) {
+                console.log(error);
+            }
             sawSynth.stop(noteLength);
-        }, rhythmMenu.value, "0s");
+        }, "8n", "0s");
     } else {
         clock = Tone.Transport.scheduleRepeat(() => {
-            sawSynth.start();
+            try {
+                sawSynth.start();
+            } catch (error) {
+                console.log(error);
+            }
             sawSynth.stop(noteLength);
-        }, rhythmMenu.value, "0s");
+        }, "8n", "0s");
     }
 }
 
@@ -172,10 +193,6 @@ function toggleRandomSpeed() {
 function toggleRandomPitch() {
     randomPitch = !randomPitch;
     updateSettings();
-}
-
-function setRhythm() {
-    updateSettings(); 
 }
 
 function setFilterCutoff() {
@@ -219,4 +236,5 @@ function closeModal() {
     let modal = document.getElementById("popup");
     modal.style.display="none";
     Tone.start();
+    Tone.Transport.bpm.value = 60;
 }

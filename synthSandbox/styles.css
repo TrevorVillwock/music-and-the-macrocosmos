@@ -39,8 +39,12 @@ h2 {
     align-items: flex-start;
 }
 
-.buttons {
+#buttons {
     float: left;
+}
+
+#boxes {
+    float: none;
 }
 
 #start-box {
@@ -103,6 +107,17 @@ h2 {
     appearance: none;  /* Override default CSS styles */
     background: #1ea5e9;
     height: 5px;
+}
+
+.check-box {
+    width: 12px;
+    height: 12px;
+}
+
+#amMod {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 /* Uncomment this to display a red border around each html element. 
