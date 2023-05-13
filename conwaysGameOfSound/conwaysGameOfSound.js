@@ -5,8 +5,6 @@ let grid; // will eventually hold html element to which all grid squares are att
 const ROWS = 10;
 const COLUMNS = 10;
 let running = false; // Boolean for whether clock is running 
-let notesClock;
-let gridClock;
 let clockId;
 const TEMPO = 1000; // milliseconds per clock tick
 
@@ -78,11 +76,8 @@ window.onload = () => {
     grid = document.getElementById("grid");
     console.log(grid);
 
-    presetMenu = document.getElementById("preset-menu");
-    presetInput = document.getElementById("preset-input");
-
     for (let i = 0; i < COLUMNS; ++i) {
-        let octave = 2 + i % octaves;
+        let octave = 6 - i % octaves; // This will start with the highest pitches on the top row
         for (let j = 0; j < ROWS; ++j) {
             const squareHtml = document.createElement("div");
             // Rows and columns will start with 1 and not 0. This is referred to as one-based array indexing.
@@ -144,6 +139,7 @@ function updateGrid() {
     console.log("updating grid")
     for (let i = 0; i < ROWS; ++i) {
         for (let j = 0; j < COLUMNS; ++j) {
+            // Count number of neighbors alive
             let neighborCount = 0;
             
             if (j > 0 && currentSquares[i][j-1].alive)

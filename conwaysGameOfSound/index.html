@@ -5,7 +5,7 @@
     Attributes - The parameters set inside the brackets like class and onmouseover
 -->
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
                 </h>
                 <div id="description">
                     <p>Conway's Game of Life is a type of cellular automaton invented by the British mathmetician John Conway in 1970. 
-                    <p>Cellular automata are mathematical systems defined by a set of cells that interact with the cells around them according to a set of rules.</p>
+                    <p>Cellular automata are mathematical systems defined by a set of cells that interact with the cells around them according to a set of rules. The Game of Life is a 2D automaton, but cellular automata with any number of dimensions are possible.</p>
                     <p>Each cell has its own state defined by a certain number of parameters; in Conway's Game of Life the cells have only one parameter, which is whether they are "alive." </p>
                     <p>The rules according to <a href="http://www.conwaylife.com">conwaylife.com</a> are as follows:</p>
                     <ul></ul>
@@ -37,10 +37,11 @@
                         <li>Any live cell with more than three live neighbours dies (referred to as overpopulation).</li>
                         <li>Any live cell with two or three live neighbours lives, unchanged, to the next generation.</li>
                         <li>Any dead cell with exactly three live neighbours comes to life.</li>
-                    <p>The Game of Life is a 2D automaton, but cellular automata with any number of dimensions are possible.</p>
-                    <p>Click a square to make it alive. Once you have created the pattern you want, press the spacebar to begin running the clock.</p>
-                    <p>Pressing the spacebar again will stop the clock.</p>
-                    <p>Each square is mapped to a note of the G major pentatonic scale.</p>
+                    <p>Conventionally, the game of life takes place on an infinite grid, but this version uses a finite 10x10 one. This creates interesting effects along the
+                        borders as cells with only 3 or 4 neighbors will respond differently to the rules.</p>
+                    <p>Click a square to make it alive or click and drag to select multiple squares. Once you have created the pattern you want, press the spacebar to begin running the clock. 
+                        Pressing the spacebar again will stop the clock.</p>
+                    <p>Each square is mapped to a note of the G major pentatonic scale. Each row of 10 squares repeats the scale twice in a particular octave. The first five rows start on G6, G5, G4, G3, and G2 and the last five rows repeat that pattern. </p>
                 </div>
             </div>
         </div>

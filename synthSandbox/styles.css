@@ -1,13 +1,9 @@
-/* Element selector / type selector / tag selector */
+/* Element selectors */
 body {
     background-color: rgb(192, 162, 240);
     margin: auto;
     max-width: 500px;
     zoom: 100%;
-}
-
-.full-height {
-    height: 50%;
 }
 
 h1 {
@@ -18,7 +14,7 @@ h2 {
     color: black;
 }
 
-/* class selector which will override the element selector */
+/* Class selectors */
 .meme {
     margin: auto;
     width: 250px;
@@ -39,18 +35,6 @@ h2 {
     align-items: flex-start;
 }
 
-#buttons {
-    float: left;
-}
-
-#boxes {
-    float: none;
-}
-
-#start-box {
-    text-align: center;
-  }
-  
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -62,20 +46,6 @@ h2 {
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    align-items: center;
-    text-align: center;
-}
-
-/* Modal Content/Box */
-#modal-content {
-    background-color: #761ee9;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 200px; /* Could be more or less, depending on screen size */
-    height: 100px;
-    display: flex;
-    justify-content: center; 
     align-items: center;
     text-align: center;
 }
@@ -95,14 +65,6 @@ h2 {
     cursor: pointer;
 }
 
-#project-name {
-    border-style: double;
-    border-width: 10px;
-    background-color: #1ea5e9;
-    border-color: black;
-    text-align: center;
-}
-
 .control-slider {
     appearance: none;  /* Override default CSS styles */
     background: #1ea5e9;
@@ -114,6 +76,41 @@ h2 {
     height: 12px;
 }
 
+/* ID selectors */
+#buttons {
+    float: left;
+}
+
+#boxes {
+    float: none;
+}
+
+#start-box {
+    text-align: center;
+}
+  
+/* Modal Content/Box */
+#modal-content {
+    background-color: #761ee9;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 200px; /* Could be more or less, depending on screen size */
+    height: 100px;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+}
+
+#project-name {
+    border-style: double;
+    border-width: 10px;
+    background-color: #1ea5e9;
+    border-color: black;
+    text-align: center;
+}
+
 #amMod {
     display: flex;
     flex-direction: row;
@@ -122,7 +119,6 @@ h2 {
 
 /* Uncomment this to display a red border around each html element. 
 The asterisk (*) stands for all elements. */
-
 /*
 * {
     border: 1px solid red;
