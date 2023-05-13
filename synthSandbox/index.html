@@ -13,73 +13,78 @@
                 <span id="start-box" class="close" onclick="closeModal()">Click to start</span>
             </div>
         </div>
-        <h1 id="project-name">Synth Sandbox</h1>
-        <div class="row">
-            <div class="column">
-                <img class="meme" src="https://trevorvillwock.github.io/synth_sandbox/annoying_sound.jpg"> </img> 
-                <div id="buttons">
-                    <button id="startButton" onclick="start()">start</button>
-                    <button id="stopButton" onclick="stop()">stop</button>
-                </div>
-                <div class="boxes">
-                    <input class="check-box" type="checkbox" id="randomSpeedButton" onclick="toggleRandomSpeed()">Random Speed</input>
-                </div>
-                <div class="boxes">
-                    <input class="check-box" type="checkbox" id="randomPitchButton" onclick="toggleRandomPitch()">Random Pitch</input>
-                </div>
-                <h2>Volume</h2>
-                <div class="volume-bar">
-                    <input type="range" min="0" max="200" value="50" id="mainVolumeSlider" class="control-slider" oninput="setMainVolume()">
-                </div>
-                <h2>Base Pitch (in Hertz)</h2>
-                <div>
-                    <input class="control-slider" type="range" min="100" max="500" value="100" id="pitchSlider"
-                        oninput="setPitch()">
-                    <input class="number-box" type="number" min="20" max="20000" value="100" id="pitchNumber" readonly>
-                    <span>Hz</span>
-                </div>
-                <h2>Low Pass Filter Cutoff</h2>
-                <div>
-                    <input class="control-slider" type="range" min="1.0" max="14.3" step=0.01 value="10.6" id="cutoffSlider" oninput="setFilterCutoff()">
-                    <input class="number-box" type="number" min="20" max="20000" value="1500" id="filterNumber" readonly>
-                    <span>Hz</span>
-                </div>
-            </div>
-            <div class="column">
-                <h2>Amplitude Modulation</h2>
-                <div id="amMod">
-                    <input type="range" min="0" max="1" step=0.01 value="0" id="amSlider" class="control-slider" oninput="setAMFreq()">
-                </div>
-                <h2>Vibrato</h2>
-                <div>
-                    <p>Frequency</p>
-                    <div>
-                        <input type="range" min="2" max="20" step="0.1" value="0.0" id="vibratoFreqSlider" class="control-slider" oninput="setVibratoFreq()">
+        <div class="app">
+            <h1 id="project-name">Synth Sandbox</h1>
+            <div class="row">
+                <div class="column">
+                    <img class="meme" src="https://trevorvillwock.github.io/synth_sandbox/annoying_sound.jpg"> </img> 
+                    <div id="button-container">
+                        <button class="buttons" id="startButton" onclick="start()">Start</button>
+                        <button class="buttons" id="stopButton" onclick="stop()">Stop</button>
                     </div>
-                    <p>Range</p>
+                    <div class="check-box-container">
+                        <input class="check-box" type="checkbox" id="randomSpeedButton" onclick="toggleRandomSpeed()">
+                        <label class="check-box-label"for="randomSpeedButton">Random Speed</label>
+                    </div>
+                    <div class="check-box-container">
+                        <input class="check-box" type="checkbox" id="randomPitchButton" onclick="toggleRandomPitch()">
+                        <label class="check-box-label" for="randomPitchButton">Random Pitch</label>
+                    </div>
+                    <h2>Volume</h2>
+                    <div class="volume-bar">
+                        <input type="range" min="0" max="200" value="50" id="mainVolumeSlider" class="control-slider" oninput="setMainVolume()">
+                    </div>
+                    <h2>Base Pitch (in Hertz)</h2>
                     <div>
-                        <input type="range" min="1.0" max="2.0" step="0.01" value="0.0" id="vibratoRangeSlider" class="control-slider" oninput="setVibratoRange()">
+                        <input class="control-slider" type="range" min="100" max="500" value="100" id="pitchSlider"
+                            oninput="setPitch()">
+                        <input class="number-box" type="number" min="20" max="20000" value="100" id="pitchNumber" readonly>
+                        <span>Hz</span>
+                    </div>
+                    <h2>Low Pass Filter Cutoff</h2>
+                    <div>
+                        <input class="control-slider" type="range" min="1.0" max="14.3" step=0.01 value="10.6" id="cutoffSlider" oninput="setFilterCutoff()">
+                        <input class="number-box" type="number" min="20" max="20000" value="1500" id="filterNumber" readonly>
+                        <span>Hz</span>
                     </div>
                 </div>
-                <h2>Delay (Echo)</h2>
-                <div>
-                    <p>Time</p>
-                    <div id="delay">
-                        <input type="range" min="0.1" max="1.0" step="0.01" value="0.5" id="delayTimeSlider" class="control-slider" oninput="setDelayTime()">
-                        <input class="number-box" type="number" min="20" max="20000" value="0.5" id="delayTimeNumber" readonly>
-                        <span>Seconds</span>
+                <div class="column">
+                    <h2>Amplitude Modulation</h2>
+                    <div id="amMod">
+                        <input type="range" min="0" max="1" step=0.01 value="0" id="amSlider" class="control-slider" oninput="setAMFreq()">
                     </div>
-                    <p>Feedback</p>
+                    <h2>Vibrato</h2>
                     <div>
-                        <input type="range" min="0.0" max="0.9" step="0.01" value="0.3" id="delayFeedbackSlider" class="control-slider" oninput="setDelayFeedback()">
+                        <p>Frequency</p>
+                        <div>
+                            <input type="range" min="2" max="20" step="0.1" value="0.0" id="vibratoFreqSlider" class="control-slider" oninput="setVibratoFreq()">
+                        </div>
+                        <p>Range</p>
+                        <div>
+                            <input type="range" min="1.0" max="2.0" step="0.01" value="0.0" id="vibratoRangeSlider" class="control-slider" oninput="setVibratoRange()">
+                        </div>
                     </div>
+                    <h2>Delay (Echo)</h2>
                     <div>
-                        <input class="number-box" type="number" min="0.0" max="0.9" value="0.3" id="delayFeedbackNumber" readonly>
-                    </div>
-                    <p>Volume</p>
-                    <div>
-                        <div class="volume-bar">
-                            <input type="range" min="0.0" max="1.0" value="0.5" step="0.01" id="delayVolumeSlider" class="control-slider" oninput="setDelayVolume()">
+                        <p>Time</p>
+                        <div id="delay">
+                            <input class="control-slider" type="range" min="0.1" max="1.0" step="0.01" value="0.5" id="delayTimeSlider" class="control-slider" oninput="setDelayTime()">
+                        <div>
+                            <input class="delay-number" type="number" min="20" max="20000" value="0.5" id="delayTimeNumber" readonly>
+                            <span>Seconds</span>
+                        </div>
+                        <p>Feedback</p>
+                        <div>
+                            <input class="control-slider" type="range" min="0.0" max="0.9" step="0.01" value="0.3" id="delayFeedbackSlider" class="control-slider" oninput="setDelayFeedback()">
+                        </div>
+                        <div>
+                            <input class="delay-number" type="number" min="0.0" max="0.9" value="0.3" id="delayFeedbackNumber" readonly>
+                        </div>
+                        <p>Volume</p>
+                        <div>
+                            <div class="volume-bar">
+                                <input class="control-slider" type="range" min="0.0" max="1.0" value="0.5" step="0.01" id="delayVolumeSlider" class="control-slider" oninput="setDelayVolume()">
+                            </div>
                         </div>
                     </div>
                 </div>

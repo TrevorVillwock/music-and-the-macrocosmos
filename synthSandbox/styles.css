@@ -15,11 +15,17 @@ h2 {
 }
 
 /* Class selectors */
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
 .meme {
-    margin: auto;
     width: 250px;
     height: 250px;
     padding-right: 20px;
+    padding-bottom: 5px;
 }
 
 .row {
@@ -33,6 +39,14 @@ h2 {
     flex-shrink: 1;
     flex-basis: auto;
     align-items: flex-start;
+}
+
+.check-box-label {
+    font-size: 14pt;
+}
+
+.delay-slider {
+    
 }
 
 .modal {
@@ -71,18 +85,30 @@ h2 {
     height: 5px;
 }
 
+.delay-number {
+    margin-top: 5px;
+}
+
 .check-box {
-    width: 12px;
-    height: 12px;
+    width: 25px;
+    height: 25px;
+}
+
+.check-box-container {
+    display: inline-flex;
+    align-items: center;
+}
+
+.buttons {
+    background-color:#1ea5e9;
+    font-size: 14pt;
+    width: 100px;
+    height: 25px;
 }
 
 /* ID selectors */
-#buttons {
-    float: left;
-}
-
-#boxes {
-    float: none;
+#button-container {
+    padding-bottom: 5px;
 }
 
 #start-box {
@@ -109,6 +135,8 @@ h2 {
     background-color: #1ea5e9;
     border-color: black;
     text-align: center;
+    width: 400px;
+    height: 40px;
 }
 
 #amMod {
@@ -117,8 +145,13 @@ h2 {
     align-items: center;
 }
 
+/* The asterisk (*) stands for all elements. */
+* {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 /* Uncomment this to display a red border around each html element. 
-The asterisk (*) stands for all elements. */
+
 /*
 * {
     border: 1px solid red;
