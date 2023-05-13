@@ -42,10 +42,10 @@ window.onload = () => {
 // The first 3 octaves and first 8 pitches of the harmonic series starting on approximately G2 (98 Hz), 
 // an octave and a fourth below middle C 
 let notes = [100, 200, 300, 400, 500, 600, 700, 800];
-let noteLength = "+0.5"; // in seconds
+let noteLength = "+8n"; // in seconds
 
 // toDestination() connects the sound produced to your computer headphones/speakers
-const mainVol = new Tone.Volume(-25).toDestination();
+const mainVol = new Tone.Volume(-100).toDestination();
 const sawSynth = new Tone.AMOscillator(100, "sawtooth64", "sine", 0.1);
 const filter = new Tone.Filter(2000, "lowpass");
 const delay = new Tone.FeedbackDelay("8n", 0.5);
@@ -73,8 +73,8 @@ lfo1.set({max: 100, min: 100});
 lfo1.start();
 
 // Boolean variable indicating whether randomness is turned on or off
-let randomSpeed = 0;
-let randomPitch = 0;
+let randomSpeed = false;
+let randomPitch = false;
 
 // Set default value for BPM (beats per minute). 60 BPM is one beat per second.
 Tone.Transport.bpm.value = 60;
@@ -89,10 +89,12 @@ let clock = Tone.Transport.scheduleRepeat(() => {
 function start() {
     Tone.Transport.start();
     updateSettings();
+    sawSynth.start();
 }
 
 // Run when the stop button is clicked
 function stop() {
+    sawSynth.stop();
     Tone.Transport.stop();
 }
 
@@ -107,7 +109,39 @@ function setMainVolume() {
   
     // log2(0) is undefined and will throw an error since there's no power of 2 that equals zero.
     if (mainVolSlider.value != 0) {
-        mainVol.volume.value = -1 * (100 - 13 * Math.log2(mainVolSlider.value));
+        mainVol.volume.value = -1 * (120 - 13 * Math.log2(mainVolSlider.value));
+    }
+}
+
+function updateSettings() {
+    Tone.Transport.clear(clock);
+
+    if (randomSpeed && randomPitch) {
+        console.log("random speed and pitch");
+        clock = Tone.Transport.scheduleRepeat(() => {
+            setVibratoRange();
+            Tone.Transport.bpm.value = 60 + Math.random() * 300;
+            console.log(`bpm: ${Tone.Transport.bpm.value}`);
+        }, "8n", "0s");
+    } else if (randomSpeed) {
+        console.log("random speed");
+        clock = Tone.Transport.scheduleRepeat(() => {
+            setVibratoRange();
+            Tone.Transport.bpm.value = 60 + Math.random() * 300;
+            console.log(`bpm: ${Tone.Transport.bpm.value}`);
+        }, "4n", "0s");
+    } else if (randomPitch) {
+        console.log("random pitch");
+        clock = Tone.Transport.scheduleRepeat(() => {
+            setVibratoRange();
+            console.log(`bpm: ${Tone.Transport.bpm.value}`);
+        }, "4n", "0s");
+    } else {
+        console.log("normal");
+        clock = Tone.Transport.scheduleRepeat(() => {
+            console.log(`bpm: ${Tone.Transport.bpm.value}`);
+            setVibratoRange();
+        }, "4n", "0s");
     }
 }
 
@@ -118,61 +152,13 @@ function setPitch() {
     pitchNumber.value = pitchSlider.value;
 }
 
-function updateSettings() {
-    Tone.Transport.cancel(clock);
-
-    if (randomSpeed && randomPitch) {
-        clock = Tone.Transport.scheduleRepeat(() => {
-            setVibratoRange();
-            Tone.Transport.bpm.value = 100 + Math.random() * 360;
-            try {
-                sawSynth.start();
-            } catch (error) {
-                // When the tempo increases, the Tone Transport object
-                // might throw an error that the next sound tried to play 
-                // exactly at the same time or before the previous sound. 
-                // This can be safely ignored for now however, and we can
-                // use a try...catch statement to handle the error safely.  
-                console.log(error);
-            }
-            
-            sawSynth.stop(noteLength);
-        }, "8n", "0s");
-    } else if (randomSpeed) {
-        clock = Tone.Transport.scheduleRepeat(() => {
-            Tone.Transport.bpm.value = 100 + Math.random() * 360;
-            try {
-                sawSynth.start();
-            } catch (error) {
-                console.log(error);
-            }
-            sawSynth.stop(noteLength);
-        }, "8n", "0s");
-    } else if (randomPitch) {
-        clock = Tone.Transport.scheduleRepeat(() => {
-            setVibratoRange();
-            try {
-                sawSynth.start();
-            } catch (error) {
-                console.log(error);
-            }
-            sawSynth.stop(noteLength);
-        }, "8n", "0s");
-    } else {
-        clock = Tone.Transport.scheduleRepeat(() => {
-            try {
-                sawSynth.start();
-            } catch (error) {
-                console.log(error);
-            }
-            sawSynth.stop(noteLength);
-        }, "8n", "0s");
-    }
-}
-
 function setVibratoRange() {
     lfoRange = vibratoRangeSlider.value;
-    let note = notes[Math.floor(Math.random() * notes.length)]
+    let note;
+    if (randomPitch) 
+        note = notes[Math.floor(Math.random() * notes.length)];
+    else
+        note = parseInt(pitchSlider.value);
     let lfoTop = (parseInt(pitchSlider.value) + note) * lfoRange;
     let lfoBottom = (parseInt(pitchSlider.value) + note) / lfoRange;
     lfo1.set({min: lfoBottom, max: lfoTop});
@@ -192,6 +178,7 @@ function toggleRandomSpeed() {
 
 function toggleRandomPitch() {
     randomPitch = !randomPitch;
+    console.log("toggling random pitch");
     updateSettings();
 }
 
@@ -202,7 +189,7 @@ function setFilterCutoff() {
     // We use exponential scaling to make it so that our ears percieve
     // an even slide across the frequency range.
     filter.frequency.value = 150 + Math.pow(2, cutoffSlider.value);
-    filterNumber.value = filter.frequency.value;
+    filterNumber.value = Math.round(filter.frequency.value);
     // console.log(filter.frequency.value);
 }
 

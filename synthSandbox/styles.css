@@ -45,10 +45,6 @@ h2 {
     font-size: 14pt;
 }
 
-.delay-slider {
-    
-}
-
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -147,7 +143,7 @@ h2 {
 
 /* The asterisk (*) stands for all elements. */
 * {
-    font-family: 'Times New Roman', Times, serif;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 /* Uncomment this to display a red border around each html element. 
