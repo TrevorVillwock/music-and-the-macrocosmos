@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(span);
     volSlider = document.getElementById("volumeSlider");
     vol = new Tone.Volume(-25).toDestination();
-    vol.volume.value = -1 * (100 - 13 * Math.log2(volSlider.value)) - 40;
+    vol.volume.value = -100;
     
     // For some reason the Tone.Reverb object only has toMaster() and not toDestination()
     // Reverb time initiated to 100 seconds
