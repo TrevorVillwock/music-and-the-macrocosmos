@@ -124,8 +124,8 @@ function updateSettings() {
             setVibratoRange();
             let randVal = 200 * Math.random();
             console.log(`randVal: ${randVal}`)
-            console.log(`baseBpm: ${baseBpm}`);
-            let sum = randVal + baseBpm;
+            console.log(`speedSlider.value: ${speedSlider.value}`);
+            let sum = randVal + speedSlider.value;
             console.log(`sum: ${sum}`);
             Tone.Transport.bpm.value = sum;
             console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
@@ -137,8 +137,8 @@ function updateSettings() {
             setVibratoRange();
             let randVal = 200 * Math.random();
             console.log(`randVal: ${randVal}`);
-            console.log(`baseBpm: ${baseBpm}`);
-            let sum = randVal + baseBpm;
+            console.log(`baseBpm: ${speedSlider.value}`);
+            let sum = randVal + speedSlider.value;
             console.log(`sum: ${sum}`);
             Tone.Transport.bpm.value = sum;
             console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
@@ -185,12 +185,12 @@ function setVibratoFreq() {
 }
 
 function setSpeed() {
-    baseBpm = speedSlider.value;
     speedNumber.value = speedSlider.value;
     if (!randomSpeed)
         Tone.Transport.bpm.value = baseBpm;
     console.log(`baseBpm: ${baseBpm}`);
     console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
+    updateSettings();
 }
 
 function toggleRandomSpeed() {
