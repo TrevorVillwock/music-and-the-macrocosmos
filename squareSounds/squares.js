@@ -198,77 +198,38 @@ document.addEventListener("DOMContentLoaded", () => {
 // and the triggerRelease message is sent
 let releaseDelay = "+0.5"
 
-function playSquare1() {
-    console.log("playing square 1");
-    currentSquare = square1;
-    square1.synth.triggerAttack(square1.synth.frequency.value);
+function playSquare(square) {
+    switch (square) {
+        case 1: currentSquare = square1;
+                square1.synth.triggerAttack(square1.synth.frequency.value);
+        case 2: currentSquare = square2;
+                square2.synth.triggerAttack(square2.synth.frequency.value);
+        case 3: currentSquare = square3;
+                square3.synth.triggerAttack(square3.synth.frequency.value);
+        case 4: currentSquare = square4;
+                square4.synth.triggerAttack(square4.synth.frequency.value);
+        case 5: currentSquare = square5;
+                square5.synth.triggerAttack(square5.synth.frequency.value);
+        case 6: currentSquare = square6;
+                square6.synth.triggerAttack(square6.synth.frequency.value);
+        case 7: currentSquare = square7;
+                square7.synth.triggerAttack(square7.synth.frequency.value);
+        case 8: currentSquare = square8;
+                square8.synth.triggerAttack(square8.synth.frequency.value);
+    }
 }
 
-function playSquare2() {
-    currentSquare = square2;
-    square2.synth.triggerAttack(square2.synth.frequency.value);
-}
-
-function playSquare3() {
-    currentSquare = square3;
-    square3.synth.triggerAttack(square3.synth.frequency.value);
-}
-
-function playSquare4() {
-    currentSquare = square4;
-    square4.synth.triggerAttack(square4.synth.frequency.value);
-}
-
-function playSquare5() {
-    currentSquare = square5;
-    square5.synth.triggerAttack(square5.synth.frequency.value);
-}
-
-function playSquare6() {
-    currentSquare = square6;
-    square6.synth.triggerAttack(square6.synth.frequency.value);
-}
-
-function playSquare7() {
-    currentSquare = square7;
-    square7.synth.triggerAttack(square7.synth.frequency.value);
-}
-
-function playSquare8() {
-    currentSquare = square8;
-    square8.synth.triggerAttack(square8.synth.frequency.value);
-}
-
-function stopSquare1() {
-    square1.synth.triggerRelease(releaseDelay);
-}
-
-function stopSquare2() {
-    square2.synth.triggerRelease(releaseDelay);
-}
-
-function stopSquare3() {
-    square3.synth.triggerRelease(releaseDelay);
-}
-
-function stopSquare4() {
-    square4.synth.triggerRelease(releaseDelay);
-}
-
-function stopSquare5() {
-    square5.synth.triggerRelease(releaseDelay);
-}
-
-function stopSquare6() {
-    square6.synth.triggerRelease(releaseDelay);
-}
-
-function stopSquare7() {
-    square7.synth.triggerRelease(releaseDelay);
-}
-
-function stopSquare8() {
-    square8.synth.triggerRelease(releaseDelay);
+function stopSquare(square) {
+    switch (square) {
+        case 1: square1.synth.triggerRelease(releaseDelay);
+        case 2: square2.synth.triggerRelease(releaseDelay);
+        case 3: square3.synth.triggerRelease(releaseDelay);
+        case 4: square4.synth.triggerRelease(releaseDelay);
+        case 5: square5.synth.triggerRelease(releaseDelay);
+        case 6: square6.synth.triggerRelease(releaseDelay);
+        case 7: square7.synth.triggerRelease(releaseDelay);
+        case 8: square8.synth.triggerRelease(releaseDelay);
+    }
 }
 
 function setVolume() {
