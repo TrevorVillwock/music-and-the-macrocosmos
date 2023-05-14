@@ -41,7 +41,9 @@
                         borders as cells with only 3 or 4 neighbors will respond differently to the rules.</p>
                     <p>Click a square to make it alive or click and drag to select multiple squares. Once you have created the pattern you want, press the spacebar to begin running the clock. 
                         Pressing the spacebar again will stop the clock.</p>
-                    <p>Each square is mapped to a note of the G major pentatonic scale. Each row of 10 squares repeats the scale twice in a particular octave. The first five rows start on G6, G5, G4, G3, and G2 and the last five rows repeat that pattern. </p>
+                    <p>Each square is mapped to a note of the G major pentatonic scale (G, A, B, D, E). Each row of 10 squares repeats the scale twice in a particular octave. The first five rows start on G6, G5, G4, G3, and G2 and the last five rows repeat that pattern. </p>
+                    <h2>Volume</h2>
+                    <input class="slider" type="range" min="0" max="200" value="0" id="volSlider" oninput="setVolume()">
                 </div>
             </div>
         </div>

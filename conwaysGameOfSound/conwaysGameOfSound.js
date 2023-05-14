@@ -2,6 +2,12 @@
 // Tone.js documentation: https://tonejs.github.io/docs/14.7.77/index.html
 
 let grid; // will eventually hold html element to which all grid squares are attached as children
+let volSlider; // will eventually hold html slider element that controls volume
+let envelope;
+let reverb;
+let vol;
+let compressor;
+
 const ROWS = 10;
 const COLUMNS = 10;
 let running = false; // Boolean for whether clock is running 
@@ -29,15 +35,6 @@ for (let i = 0; i < ROWS; ++i) {
 // Specify frequencies for squares
 let pitches = ["G", "A", "B", "D", "E"];
 let octaves = 5;
-
-let reverb = new Tone.Reverb({decay: 10}).toDestination();
-
-let envelope = new Tone.AmplitudeEnvelope({
-    attack: 0.25,
-    decay: 0,
-    sustain: 0.25,
-    release: 0.25
-}).connect(reverb);
 
 function closeModal() {
     let modal = document.getElementById("popup");
@@ -74,7 +71,18 @@ function updateSquare(newCurrentSquare, divId) {
 window.onload = () => {
     // Create grid of squares
     grid = document.getElementById("grid");
+    volSlider = document.getElementById("volSlider");
     console.log(grid);
+    vol = new Tone.Volume().toDestination();
+    vol.volume.value = -100;
+    compressor = new Tone.Compressor(-30, 10).connect(vol); // Threshold of -30db and compression ratio of 10:1
+    reverb = new Tone.Reverb({decay: 10}).connect(compressor);
+    envelope = new Tone.AmplitudeEnvelope({
+        attack: 0.25,
+        decay: 0,
+        sustain: 0.25,
+        release: 0.25
+    }).connect(reverb);
 
     for (let i = 0; i < COLUMNS; ++i) {
         let octave = 6 - i % octaves; // This will start with the highest pitches on the top row
@@ -197,4 +205,24 @@ function start() {
 function stop() {
     running = false;
     clearInterval(clockId);
+}
+
+function setVolume() {
+    
+    /************************************************************
+    The html slider gives us values 0-200, which we map
+    to be between -100 and 0 dB because that's what the
+    Tone.js Volume object expects.
+    For an explanation of how decibels work check out this page:
+    https://ehomerecordingstudio.com/decibels/
+
+    *************************************************************/ 
+  
+    // log2(0) is undefined and will throw an error since there's no power of 2 that equals zero.
+    if (volSlider.value != 0) {
+      vol.volume.value = -1 * (100 - 13 * Math.log2(volSlider.value));
+      console.log(vol.volume.value);
+    }
+
+    console.log("setting volume");
 }

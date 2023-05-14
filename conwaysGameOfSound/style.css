@@ -4,10 +4,12 @@ html {
   background-color: rgb(255, 255, 255);
   flex: 1 1 auto;
   zoom: 80%;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 h {
   font-size: 50px;
+  font-weight: bold;
 }
 
 .modal {
@@ -38,6 +40,15 @@ h {
   color: rgb(178, 181, 138);
   text-decoration: none;
   cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 100px; /* Set a specific slider handle width */
+  height: 100px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
 }
 
 #row {
@@ -92,6 +103,11 @@ explanation of auto-fill: https://www.w3.org/TR/css3-grid-layout/#fr-unit
 
 #description {
   font-size: 25px;
+}
+
+#volSlider {
+  width: 400px;
+  background: blue;
 }
 
 /* uncomment the CSS below to add a red border to every html object */
