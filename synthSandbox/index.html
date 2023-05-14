@@ -34,6 +34,12 @@
                     <div class="volume-bar">
                         <input type="range" min="0" max="200" value="0" id="mainVolumeSlider" class="control-slider" oninput="setMainVolume()">
                     </div>
+                    <h2>Speed</h2>
+                    <div class="speed-bar">
+                        <input class="control-slider" type="range" min="50.0" max="200.0" value="50.0" id="speedSlider" oninput="setSpeed()">
+                        <input class="number-box" type="number" min="50" max="200" value="100" id="speedNumber" readonly>
+                        <span>BPM</span>
+                    </div>
                     <h2>Base Pitch (in Hertz)</h2>
                     <div>
                         <input class="control-slider" type="range" min="100" max="500" value="100" id="pitchSlider"

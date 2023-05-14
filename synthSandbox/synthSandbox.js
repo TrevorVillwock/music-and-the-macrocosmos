@@ -5,6 +5,8 @@
 frequency oscillators (LFOs), and delay. */
 
 let mainVolSlider;
+let speedSlider;
+let speedNumber;
 let pitchSlider;
 let cutoffSlider;
 let vibratoFreqSlider;
@@ -22,6 +24,8 @@ let delayVolSlider;
 
 window.onload = () => {
     mainVolSlider = document.getElementById("mainVolumeSlider");
+    speedSlider = document.getElementById("speedSlider");
+    speedNumber = document.getElementById("speedNumber");
     pitchSlider = document.getElementById("pitchSlider");
     cutoffSlider = document.getElementById("cutoffSlider");
     amSlider = document.getElementById("amSlider");
@@ -43,6 +47,7 @@ window.onload = () => {
 // an octave and a fourth below middle C 
 let notes = [100, 200, 300, 400, 500, 600, 700, 800];
 let noteLength = "+8n"; // in seconds
+let baseBpm = 60.0; // BPM set by speed slider; it will be randomly added to in random speed mode.
 
 // toDestination() connects the sound produced to your computer headphones/speakers
 const mainVol = new Tone.Volume(-100).toDestination();
@@ -76,14 +81,10 @@ lfo1.start();
 let randomSpeed = false;
 let randomPitch = false;
 
-// Set default value for BPM (beats per minute). 60 BPM is one beat per second.
-Tone.Transport.bpm.value = 60;
-
 let clock = Tone.Transport.scheduleRepeat(() => {
-    //console.log("synth frequency: " + sawSynth.frequency.value)
-    sawSynth.start()
-    sawSynth.stop(noteLength);
-}, "4n");
+    console.log(`bpm: ${Tone.Transport.bpm.value}`);
+    setVibratoRange();
+}, "4n", "0s");
 
 // Run when start button is clicked
 function start() {
@@ -95,6 +96,7 @@ function start() {
 // Run when the stop button is clicked
 function stop() {
     sawSynth.stop();
+    Tone.Transport.clear(clock);
     Tone.Transport.stop();
 }
 
@@ -120,26 +122,37 @@ function updateSettings() {
         console.log("random speed and pitch");
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            Tone.Transport.bpm.value = 60 + Math.random() * 300;
-            console.log(`bpm: ${Tone.Transport.bpm.value}`);
+            let randVal = 200 * Math.random();
+            console.log(`randVal: ${randVal}`)
+            console.log(`baseBpm: ${baseBpm}`);
+            let sum = randVal + baseBpm;
+            console.log(`sum: ${sum}`);
+            Tone.Transport.bpm.value = sum;
+            console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
+            
         }, "8n", "0s");
     } else if (randomSpeed) {
         console.log("random speed");
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            Tone.Transport.bpm.value = 60 + Math.random() * 300;
-            console.log(`bpm: ${Tone.Transport.bpm.value}`);
+            let randVal = 200 * Math.random();
+            console.log(`randVal: ${randVal}`);
+            console.log(`baseBpm: ${baseBpm}`);
+            let sum = randVal + baseBpm;
+            console.log(`sum: ${sum}`);
+            Tone.Transport.bpm.value = sum;
+            console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
         }, "4n", "0s");
     } else if (randomPitch) {
         console.log("random pitch");
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            console.log(`bpm: ${Tone.Transport.bpm.value}`);
+            console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
         }, "4n", "0s");
     } else {
         console.log("normal");
         clock = Tone.Transport.scheduleRepeat(() => {
-            console.log(`bpm: ${Tone.Transport.bpm.value}`);
+            console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
             setVibratoRange();
         }, "4n", "0s");
     }
@@ -169,6 +182,15 @@ function setVibratoRange() {
 function setVibratoFreq() {
     lfo1.set({frequency: Math.log2(vibratoFreqSlider.value) - 1});
     // console.log(`lfo frequency: ${lfo1.frequency.value}`);
+}
+
+function setSpeed() {
+    baseBpm = speedSlider.value;
+    speedNumber.value = speedSlider.value;
+    if (!randomSpeed)
+        Tone.Transport.bpm.value = baseBpm;
+    console.log(`baseBpm: ${baseBpm}`);
+    console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
 }
 
 function toggleRandomSpeed() {
