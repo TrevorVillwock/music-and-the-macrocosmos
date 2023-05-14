@@ -20,5 +20,3 @@ For Hex Grid, run:
 `npm run dev`
 
 For the other projects, run `http-server`.
-
-See the README in each project's folder for information about them.
