@@ -45,7 +45,7 @@ window.onload = () => {
 
 // The first 3 octaves and first 8 pitches of the harmonic series starting on approximately G2 (98 Hz), 
 // an octave and a fourth below middle C 
-let notes = [100, 200, 300, 400, 500, 600, 700, 800];
+let notes = [0, 100, 200, 300, 400, 500, 600, 700, 800];
 let noteLength = "+8n"; // in seconds
 let baseBpm = 50; // BPM set by speed slider; it will be randomly added to in random speed mode.
 
@@ -122,39 +122,24 @@ function updateSettings() {
         console.log("random speed and pitch");
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            let randVal = 300 * Math.random();
-            console.log(`randVal: ${randVal}`)
-            console.log(`speedSlider.value: ${speedSlider.value}`);
-            let sum = randVal + parseInt(speedSlider.value);
-            console.log(`sum: ${sum}`);
-            Tone.Transport.bpm.value = sum;
-            speedNumber.value = Math.round(sum);
-            console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
-            
+            Tone.Transport.bpm.value = parseInt(speedSlider.value) + 300 * Math.random();
+            speedNumber.value = Math.round(Tone.Transport.bpm.value);
         }, "8n", "0s");
     } else if (randomSpeed) {
         console.log("random speed");
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            let randVal = 300 * Math.random();
-            console.log(`randVal: ${randVal}`);
-            console.log(`speedSlider.value: ${speedSlider.value}`);
-            let sum = randVal + parseInt(speedSlider.value);
-            console.log(`sum: ${sum}`);
-            Tone.Transport.bpm.value = sum;
-            speedNumber.value = Math.round(sum);
-            console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
+            Tone.Transport.bpm.value = parseInt(speedSlider.value) + 300 * Math.random();
+            speedNumber.value = Math.round(Tone.Transport.bpm.value);
         }, "4n", "0s");
     } else if (randomPitch) {
         console.log("random pitch");
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
         }, "4n", "0s");
     } else {
         console.log("normal");
         clock = Tone.Transport.scheduleRepeat(() => {
-            console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
             setVibratoRange();
         }, "4n", "0s");
     }
