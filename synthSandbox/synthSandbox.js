@@ -47,7 +47,7 @@ window.onload = () => {
 // an octave and a fourth below middle C 
 let notes = [100, 200, 300, 400, 500, 600, 700, 800];
 let noteLength = "+8n"; // in seconds
-let baseBpm = 60.0; // BPM set by speed slider; it will be randomly added to in random speed mode.
+let baseBpm = 50; // BPM set by speed slider; it will be randomly added to in random speed mode.
 
 // toDestination() connects the sound produced to your computer headphones/speakers
 const mainVol = new Tone.Volume(-100).toDestination();
@@ -122,12 +122,13 @@ function updateSettings() {
         console.log("random speed and pitch");
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            let randVal = 200 * Math.random();
+            let randVal = 300 * Math.random();
             console.log(`randVal: ${randVal}`)
             console.log(`speedSlider.value: ${speedSlider.value}`);
-            let sum = randVal + speedSlider.value;
+            let sum = randVal + parseInt(speedSlider.value);
             console.log(`sum: ${sum}`);
             Tone.Transport.bpm.value = sum;
+            speedNumber.value = Math.round(sum);
             console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
             
         }, "8n", "0s");
@@ -135,12 +136,13 @@ function updateSettings() {
         console.log("random speed");
         clock = Tone.Transport.scheduleRepeat(() => {
             setVibratoRange();
-            let randVal = 200 * Math.random();
+            let randVal = 300 * Math.random();
             console.log(`randVal: ${randVal}`);
-            console.log(`baseBpm: ${speedSlider.value}`);
-            let sum = randVal + speedSlider.value;
+            console.log(`speedSlider.value: ${speedSlider.value}`);
+            let sum = randVal + parseInt(speedSlider.value);
             console.log(`sum: ${sum}`);
             Tone.Transport.bpm.value = sum;
+            speedNumber.value = Math.round(sum);
             console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
         }, "4n", "0s");
     } else if (randomPitch) {
@@ -185,11 +187,11 @@ function setVibratoFreq() {
 }
 
 function setSpeed() {
-    speedNumber.value = speedSlider.value;
-    if (!randomSpeed)
-        Tone.Transport.bpm.value = baseBpm;
-    console.log(`baseBpm: ${baseBpm}`);
-    console.log(`Transport.bpm: ${Tone.Transport.bpm.value}`);
+    console.log("setSpeed");
+    if (!randomSpeed) { 
+        speedNumber.value = Math.round(speedSlider.value);
+        Tone.Transport.bpm.value = speedSlider.value;
+    }
     updateSettings();
 }
 
@@ -221,7 +223,6 @@ function setAMFreq() {
     A harmonicity of 1 gives both oscillators the same frequency. 
     Harmonicity = 2 means a change of an octave. */
     sawSynth.set({harmonicity: amSlider.value});
-    amNumber.value = amSlider.value;
 }
 
 function setDelayTime() {
