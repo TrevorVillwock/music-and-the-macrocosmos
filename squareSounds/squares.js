@@ -202,33 +202,52 @@ function playSquare(square) {
     switch (square) {
         case 1: currentSquare = square1;
                 square1.synth.triggerAttack(square1.synth.frequency.value);
+                break;
         case 2: currentSquare = square2;
                 square2.synth.triggerAttack(square2.synth.frequency.value);
+                break;
         case 3: currentSquare = square3;
                 square3.synth.triggerAttack(square3.synth.frequency.value);
+                break;
         case 4: currentSquare = square4;
                 square4.synth.triggerAttack(square4.synth.frequency.value);
+                break;
         case 5: currentSquare = square5;
                 square5.synth.triggerAttack(square5.synth.frequency.value);
+                break;
         case 6: currentSquare = square6;
                 square6.synth.triggerAttack(square6.synth.frequency.value);
+                break;
         case 7: currentSquare = square7;
                 square7.synth.triggerAttack(square7.synth.frequency.value);
+                break;
         case 8: currentSquare = square8;
                 square8.synth.triggerAttack(square8.synth.frequency.value);
+                break;
+        default:
+                console.log("unexpected value");
     }
 }
 
 function stopSquare(square) {
     switch (square) {
         case 1: square1.synth.triggerRelease(releaseDelay);
+                break;
         case 2: square2.synth.triggerRelease(releaseDelay);
+                break;         
         case 3: square3.synth.triggerRelease(releaseDelay);
+                break;
         case 4: square4.synth.triggerRelease(releaseDelay);
+                break;
         case 5: square5.synth.triggerRelease(releaseDelay);
+                break;
         case 6: square6.synth.triggerRelease(releaseDelay);
+                break;
         case 7: square7.synth.triggerRelease(releaseDelay);
+                break;
         case 8: square8.synth.triggerRelease(releaseDelay);
+                break;
+        default: console.log("unexpected value");
     }
 }
 
