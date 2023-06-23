@@ -7,7 +7,9 @@ let reverb;
 let vol;
 let compressor;
 let synths;
+let liveSquares;
 
+const baseVolume = -50;
 const ROWS = 10;
 const COLUMNS = 10;
 let running = false; // Boolean for whether clock is running 
@@ -86,8 +88,6 @@ window.onload = () => {
         sustain: 0.25,
         release: 0.25
     }).connect(reverb);
-
-    let baseVolume = -50;
     synths = {
         "G2": new Tone.Synth({volume: baseVolume}).connect(envelope),
         "A2": new Tone.Synth({volume: baseVolume}).connect(envelope),
@@ -160,7 +160,7 @@ function playNotes() {
     // console.log("playing notes");
     // The 0.5 here means that the envelope will trigger the release 0.5 seconds after the attack
     envelope.triggerAttackRelease("0.5");
-    let liveSquares = {};
+    liveSquares = {};
 
     // This creates a list of pitches of live squares. There may be duplicates!
     for (let i = 0; i < COLUMNS; ++i) {
@@ -171,7 +171,7 @@ function playNotes() {
                 // We create an object that stores the name of each pitch to play and keep track of
                 // which pitches have been played so they don't get triggered twice. A 0 signifies a pitch
                 // that has been played.
-                liveSquares[currentSquares[i][j]] = 0;
+                liveSquares[currentSquares[i][j].pitch] = 0;
             }
         }
     }
@@ -183,13 +183,29 @@ function playNotes() {
         synths[liveSquares[i]].volume.value += 10;
     }
 
+    let playCount = 0;
     for (let i = 0; i < COLUMNS; ++i) {
         for (let j = 0; j < ROWS; ++j) {
             if (currentSquares[i][j].alive && !liveSquares[currentSquares[i][j].pitch]) {
-                synths[currentSquares[i][j].pitch].triggerAttackRelease(currentSquares[i][j].pitch, "4n");
+                // mark note as played
+                liveSquares[currentSquares[i][j].pitch] = 1;
+                ++playCount;
+                console.log("playing " + currentSquares[i][j].pitch);
+                try {
+                    synths[currentSquares[i][j].pitch].triggerAttackRelease(currentSquares[i][j].pitch, TEMPO) 
+                } catch (e) {
+                    console.log(e)
+                };
             }
         }
-    }        
+    }
+    console.log("playCount: " + playCount);  
+    // reset the volumes of all synths 
+    for (let [key, obValue] of Object.entries(synths)) {
+        //console.log("obValue.volume.value:");
+        //console.log(obValue.volume.value);
+        obValue.volume.value = baseVolume;
+    }
 }
 
 function updateGrid() {
@@ -241,6 +257,7 @@ function updateGrid() {
 function advanceClock() {
     // console.log("advancing clock");
     playNotes();
+    // The 0.9 here makes it so that the grid updates visually slightly before the notes are played
     setTimeout(()=>{updateGrid();}, TEMPO * 0.9);
 }
 
