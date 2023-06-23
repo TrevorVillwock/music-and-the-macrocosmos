@@ -1,12 +1,12 @@
-// Trevor Villwock 2022-2023
+// Trevor Villwock and Eric Mulhern 2022-2023
 // Tone.js documentation: https://tonejs.github.io/docs/14.7.77/index.html
-
 let grid; // will eventually hold html element to which all grid squares are attached as children
 let volSlider; // will eventually hold html slider element that controls volume
 let envelope;
 let reverb;
 let vol;
 let compressor;
+let synths;
 
 const ROWS = 10;
 const COLUMNS = 10;
@@ -43,15 +43,18 @@ function closeModal() {
 }
 
 document.addEventListener("keypress", (event) => {
-  console.log(event.code);
-  if (event.code == "Space") {
-      // by default, space scrolls down. this prevents this
-      event.preventDefault();
+    // console.log(event.code);
+    if (event.code == "Space") {
+        // by default, space scrolls down. this prevents this
+        event.preventDefault();
+        let testSynth = new Tone.Synth({volume: -30});
+        testSynth.connect(reverb);
+        testSynth.triggerAttackRelease("G3", "8n");
         if (running) {    
-            console.log("stopping");
+            // console.log("stopping");
             stop();
         } else { 
-            console.log("starting");
+            // console.log("starting");
             start();
         } 
     }
@@ -71,8 +74,8 @@ function updateSquare(newCurrentSquare, divId) {
 window.onload = () => {
     // Create grid of squares
     grid = document.getElementById("grid");
+    // console.log(grid);
     volSlider = document.getElementById("volSlider");
-    console.log(grid);
     vol = new Tone.Volume().toDestination();
     vol.volume.value = -100;
     compressor = new Tone.Compressor(-30, 10).connect(vol); // Threshold of -30db and compression ratio of 10:1
@@ -84,6 +87,35 @@ window.onload = () => {
         release: 0.25
     }).connect(reverb);
 
+    let baseVolume = -50;
+    synths = {
+        "G2": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "A2": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "B2": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "D2": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "E2": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "G3": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "A3": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "B3": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "D3": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "E3": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "G4": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "A4": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "B4": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "D4": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "E4": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "G5": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "A5": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "B5": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "D5": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "E5": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "G6": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "A6": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "B6": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "D6": new Tone.Synth({volume: baseVolume}).connect(envelope),
+        "E6": new Tone.Synth({volume: baseVolume}).connect(envelope)
+    };      
+
     for (let i = 0; i < COLUMNS; ++i) {
         let octave = 6 - i % octaves; // This will start with the highest pitches on the top row
         for (let j = 0; j < ROWS; ++j) {
@@ -93,18 +125,14 @@ window.onload = () => {
             squareHtml.id = divId;
             squareHtml.style.backgroundColor = "blue";
             grid.appendChild(squareHtml);
-            const pitchName = pitches[j % pitches.length] + octave;
+            let pitchName = pitches[j % pitches.length] + octave;
             
             console.log(`${divId} ${pitchName}`);
-
-            // Volume is in decibels
-            const synth = new Tone.Synth({volume: -30}).connect(envelope);
             
             const newCurrentSquare = {
                 html: squareHtml,
                 alive: false,
-                pitch: pitchName,
-                instrument: synth
+                pitch: pitchName
             };
 
             const newNextSquare = {
@@ -114,12 +142,12 @@ window.onload = () => {
             };
 
             squareHtml.addEventListener("mousedown", (e) => {
-              updateSquare(newCurrentSquare, divId);
+                updateSquare(newCurrentSquare, divId);
             });
             squareHtml.addEventListener("mouseover", (e) => {
-              if (e.buttons === 1) {
-                updateSquare(newCurrentSquare, divId);
-              }
+                if (e.buttons === 1) {
+                    updateSquare(newCurrentSquare, divId);
+                }
             });
 
             currentSquares[i][j] = newCurrentSquare;
@@ -129,22 +157,43 @@ window.onload = () => {
 }
 
 function playNotes() {
-    console.log("playing notes");
+    // console.log("playing notes");
     // The 0.5 here means that the envelope will trigger the release 0.5 seconds after the attack
     envelope.triggerAttackRelease("0.5");
+    let liveSquares = {};
 
+    // This creates a list of pitches of live squares. There may be duplicates!
     for (let i = 0; i < COLUMNS; ++i) {
         for (let j = 0; j < ROWS; ++j) {
             if (currentSquares[i][j].alive) {
-                console.log(`${currentSquares[i][j].html.id}: ${currentSquares[i][j].pitch}`);
-                currentSquares[i][j].instrument.triggerAttackRelease(currentSquares[i][j].pitch, 1.0);
+                //console.log(`${currentSquares[i][j].html.id}: ${currentSquares[i][j].pitch}`);
+                
+                // We create an object that stores the name of each pitch to play and keep track of
+                // which pitches have been played so they don't get triggered twice. A 0 signifies a pitch
+                // that has been played.
+                liveSquares[currentSquares[i][j]] = 0;
             }
         }
     }
+
+    console.log("liveSquares:");
+    console.log(liveSquares);
+
+    for (let i = 0; i < liveSquares.length; ++i) {
+        synths[liveSquares[i]].volume.value += 10;
+    }
+
+    for (let i = 0; i < COLUMNS; ++i) {
+        for (let j = 0; j < ROWS; ++j) {
+            if (currentSquares[i][j].alive && !liveSquares[currentSquares[i][j].pitch]) {
+                synths[currentSquares[i][j].pitch].triggerAttackRelease(currentSquares[i][j].pitch, "4n");
+            }
+        }
+    }        
 }
 
 function updateGrid() {
-    console.log("updating grid")
+    // console.log("updating grid")
     for (let i = 0; i < ROWS; ++i) {
         for (let j = 0; j < COLUMNS; ++j) {
             // Count number of neighbors alive
@@ -190,7 +239,7 @@ function updateGrid() {
 }
 
 function advanceClock() {
-    console.log("advancing clock");
+    // console.log("advancing clock");
     playNotes();
     setTimeout(()=>{updateGrid();}, TEMPO * 0.9);
 }
@@ -199,7 +248,7 @@ function start() {
     running = true;
     advanceClock();
     clockId = setInterval(advanceClock, TEMPO);
-    console.log(`clockId: ${clockId}`);
+    // console.log(`clockId: ${clockId}`);
 }
 
 function stop() {
@@ -224,5 +273,5 @@ function setVolume() {
       console.log(vol.volume.value);
     }
 
-    console.log("setting volume");
+    // console.log("setting volume");
 }
