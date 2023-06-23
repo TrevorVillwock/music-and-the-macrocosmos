@@ -88,6 +88,9 @@ window.onload = () => {
         sustain: 0.25,
         release: 0.25
     }).connect(reverb);
+    /* To improve performance, this has been refactored so that instead of playing multiple synths with the same pitch we adjust
+    the volume of each pitch to acheive the same effect.
+    */
     synths = {
         "G2": new Tone.Synth({volume: baseVolume}).connect(envelope),
         "A2": new Tone.Synth({volume: baseVolume}).connect(envelope),
@@ -127,7 +130,7 @@ window.onload = () => {
             grid.appendChild(squareHtml);
             let pitchName = pitches[j % pitches.length] + octave;
             
-            console.log(`${divId} ${pitchName}`);
+            // console.log(`${divId} ${pitchName}`);
             
             const newCurrentSquare = {
                 html: squareHtml,
@@ -156,6 +159,9 @@ window.onload = () => {
     }
 }
 
+/* To improve performance, this has been refactored so that instead of playing multiple synths with the same pitch we adjust
+the volume of each pitch to acheive the same effect.
+*/
 function playNotes() {
     // console.log("playing notes");
     // The 0.5 here means that the envelope will trigger the release 0.5 seconds after the attack
@@ -170,13 +176,13 @@ function playNotes() {
                 
                 // We create an object that stores the name of each pitch to play and keep track of
                 // which pitches have been played so they don't get triggered twice. A 0 signifies a pitch
-                // that has been played.
+                // that hasn't been played.
                 liveSquares[currentSquares[i][j].pitch] = 0;
             }
         }
     }
 
-    console.log("liveSquares:");
+    console.log("liveSquares before playing:");
     console.log(liveSquares);
 
     for (let i = 0; i < liveSquares.length; ++i) {
@@ -194,12 +200,16 @@ function playNotes() {
                 try {
                     synths[currentSquares[i][j].pitch].triggerAttackRelease(currentSquares[i][j].pitch, TEMPO) 
                 } catch (e) {
-                    console.log(e)
+                    console.log(e);
                 };
             }
         }
     }
-    console.log("playCount: " + playCount);  
+
+    console.log("liveSquares after playing:");
+    console.log(liveSquares);
+    console.log("playCount: " + playCount);
+
     // reset the volumes of all synths 
     for (let [key, obValue] of Object.entries(synths)) {
         //console.log("obValue.volume.value:");
@@ -265,7 +275,7 @@ function start() {
     running = true;
     advanceClock();
     clockId = setInterval(advanceClock, TEMPO);
-    // console.log(`clockId: ${clockId}`);
+    console.log(`clockId: ${clockId}`);
 }
 
 function stop() {
