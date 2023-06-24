@@ -184,12 +184,12 @@ function playNotes() {
     console.log("liveSquares before playing:");
     console.log(liveSquares);
 
-    /* for (let [key, obValue] of Object.entries(liveSquares)) { // key= "G3", etc. obValue = 1+
+    for (let [key, obValue] of Object.entries(liveSquares)) { // key= "G3", etc. obValue = 1+
         for (let i = 0; i < obValue; ++i)
             synths[key].volume.value += 10;
         
         console.log("synths[key].volume.value: " + synths[key].volume.value);
-    } */
+    }
 
     let playCount = 0;
     for (let i = 0; i < COLUMNS; ++i) {

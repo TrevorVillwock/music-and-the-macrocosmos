@@ -173,10 +173,12 @@ function playNotes() {
             if (currentSquares[i][j].alive) {
                 //console.log(`${currentSquares[i][j].html.id}: ${currentSquares[i][j].pitch}`);
                 
-                // We create an object that stores the name of each pitch to play and keep track of
-                // which pitches have been played so they don't get triggered twice. A 0 signifies a pitch
-                // that hasn't been played.
-                liveSquares[currentSquares[i][j].pitch] = 0;
+                // We create an object that stores the name of each pitch to play and how many duplicates it has
+                if (currentSquares[i][j].pitch in liveSquares) {
+                    liveSquares[currentSquares[i][j].pitch] += 1;
+                } else {
+                    liveSquares[currentSquares[i][j].pitch] = 1;
+                }
             }
         }
     }
@@ -184,24 +186,32 @@ function playNotes() {
     console.log("liveSquares before playing:");
     console.log(liveSquares);
 
-    for (let [key, obValue] of Object.entries(liveSquares)) {
-        synths[key].volume.value += 20;
-        console.log("key: " + key);
+    for (let [key, obValue] of Object.entries(liveSquares)) { // key= "G3", etc. obValue = 1+
+        for (let i = 0; i < obValue; ++i)
+            synths[key].volume.value += 10;
+        
+        console.log("synths[key].volume.value: " + synths[key].volume.value);
     }
+
+    /*for (let [key, obValue] of Object.entries(liveSquares)) {
+        synths[key].volume.value += 10;
+        console.log("key: " + key);
+        console.log("synths[key].volume.value: " + synths[key].volume.value);
+    }*/
 
     let playCount = 0;
     for (let i = 0; i < COLUMNS; ++i) {
         for (let j = 0; j < ROWS; ++j) {
-            if (currentSquares[i][j].alive && !liveSquares[currentSquares[i][j].pitch]) {
+            if (currentSquares[i][j].alive && liveSquares[currentSquares[i][j].pitch]) {
                 // mark note as played
                 liveSquares[currentSquares[i][j].pitch] = 1;
                 ++playCount;
-                console.log("playing " + currentSquares[i][j].pitch);
+                //console.log("playing " + currentSquares[i][j].pitch);
                 try {
                     synths[currentSquares[i][j].pitch].triggerAttackRelease(currentSquares[i][j].pitch, TEMPO / 1000); 
                     //console.log(synths[currentSquares[i][j].pitch]);
                 } catch (e) {
-                    console.log(e);
+                    //console.log(e);
                 };
             }
         }
