@@ -7,9 +7,8 @@ let reverb;
 let vol;
 let compressor;
 let synths;
-let liveSquares;
 
-const baseVolume = -30;
+const baseVolume = -10;
 const ROWS = 10;
 const COLUMNS = 10;
 let running = false; // Boolean for whether clock is running 
@@ -164,8 +163,7 @@ the volume of each pitch to acheive the same effect.
 */
 function playNotes() {
     // console.log("playing notes");
-    // The 0.5 here means that the envelope will trigger the release 0.5 seconds after the attack
-    liveSquares = {};
+    let liveSquares = {};
 
     // This creates a list of pitches of live squares. There may be duplicates!
     for (let i = 0; i < COLUMNS; ++i) {
@@ -173,10 +171,12 @@ function playNotes() {
             if (currentSquares[i][j].alive) {
                 //console.log(`${currentSquares[i][j].html.id}: ${currentSquares[i][j].pitch}`);
                 
-                // We create an object that stores the name of each pitch to play and keep track of
-                // which pitches have been played so they don't get triggered twice. A 0 signifies a pitch
-                // that hasn't been played.
-                liveSquares[currentSquares[i][j].pitch] = 0;
+                // We create an object that stores the name of each pitch to play and how many duplicates it has
+                if (currentSquares[i][j].pitch in liveSquares) {
+                    liveSquares[currentSquares[i][j].pitch] += 1;
+                } else {
+                    liveSquares[currentSquares[i][j].pitch] = 1;
+                }
             }
         }
     }
@@ -184,10 +184,12 @@ function playNotes() {
     console.log("liveSquares before playing:");
     console.log(liveSquares);
 
-    for (let [key, obValue] of Object.entries(liveSquares)) {
-        synths[key].volume.value += 20;
-        console.log("key: " + key);
-    }
+    /* for (let [key, obValue] of Object.entries(liveSquares)) { // key= "G3", etc. obValue = 1+
+        for (let i = 0; i < obValue; ++i)
+            synths[key].volume.value += 10;
+        
+        console.log("synths[key].volume.value: " + synths[key].volume.value);
+    } */
 
     let playCount = 0;
     for (let i = 0; i < COLUMNS; ++i) {
@@ -199,13 +201,13 @@ function playNotes() {
                 console.log("playing " + currentSquares[i][j].pitch);
                 try {
                     synths[currentSquares[i][j].pitch].triggerAttackRelease(currentSquares[i][j].pitch, TEMPO / 1000); 
-                    //console.log(synths[currentSquares[i][j].pitch]);
                 } catch (e) {
                     console.log(e);
                 };
             }
         }
     }
+    // The 0.5 here means that the envelope will trigger the release 0.5 seconds after the attack
     envelope.triggerAttackRelease("0.5");
 
     console.log("liveSquares after playing:");
