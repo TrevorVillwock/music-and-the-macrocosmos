@@ -1,0 +1,41 @@
+<!--
+    Basic HTML Terminology 
+    
+    Tags - The first word within the angled brackets (<html>, <div>, etc.)
+    Attributes - The parameters set inside the brackets like class and onmouseover
+-->
+
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.53/Tone.js"></script>
+        <script src="./squares.js"></script>
+        <link href="./style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="popup" class="modal" style="display:block">
+            <div id="modal-content">
+                <span id="start-box" class="close" onclick="closeModal()">Click to start</span>
+            </div>
+        </div>
+        <div id="square-1" class="square" onmouseover="playSquare(1)" onmouseleave="stopSquare(1)"></div>
+        <div id="square-2" class="square" onmouseover="playSquare(2)" onmouseleave="stopSquare(2)"></div>
+        <div id="square-3" class="square" onmouseover="playSquare(3)" onmouseleave="stopSquare(3)"></div>
+        <div id="square-4" class="square" onmouseover="playSquare(4)" onmouseleave="stopSquare(4)"></div>
+        <div id="square-5" class="square" onmouseover="playSquare(5)" onmouseleave="stopSquare(5)"></div>
+        <div id="square-6" class="square" onmouseover="playSquare(6)" onmouseleave="stopSquare(6)"></div>
+        <div id="square-7" class="square" onmouseover="playSquare(7)" onmouseleave="stopSquare(7)"></div>
+        <div id="square-8" class="square" onmouseover="playSquare(8)" onmouseleave="stopSquare(8)"></div>
+        <div id="controls">
+            <p>Hover over the squares to hear sine waves of various pitches with copious amounts of reverb.</p>
+            <p>Press the shift key to control each square's pitch by moving vertically.</p>
+            <p>Press it again to lock the tuning of all squares into place.</p> 
+            <p>Press the space key to return to the original tuning and lock it into place.</p>
+            <p>Volume</p>
+            <input type="range" min="0" max="200" value="0" id="volume-slider" oninput="setVolume()">
+            <p>square-1 controls</p>
+            <input type="range" min="0" max="1000" value="0" id="square-1-x-pos-slider" oninput="setSquare1XPos()">
+        </div>
+    </body>
+</html>

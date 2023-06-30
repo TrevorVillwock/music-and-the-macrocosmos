@@ -1,0 +1,48 @@
+/* Source: https://codepen.io/rachelandrew/pen/YqqdXL */
+.wrapper {
+    margin: 0 auto;
+    width: 90%;
+}
+  
+.cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cards li {
+    border: 2px solid #490A3D;
+    border-radius:5px;
+    background-color: #BD1550;
+    color: #fff;
+    flex: 1 1 200px;
+}
+
+.cards h2 {
+    background-color: #490A3D;
+    margin: 0;
+    padding: 10px;
+}
+
+.cards p {
+    padding: 10px;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+}
+
+.flex li {
+    flex: 1 1 200px;
+    margin: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    /*grid-template-columns: repeat(auto-fill, minmax(200px 1fr));*/
+    grid-gap: 20px;
+}
+  
