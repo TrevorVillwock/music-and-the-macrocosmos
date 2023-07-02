@@ -6,7 +6,7 @@ let envelope;
 let reverb;
 let vol;
 let compressor;
-let synths;
+let synths = {};
 let liveSquares;
 
 const baseVolume = -30;
@@ -32,7 +32,7 @@ for (let i = 0; i < ROWS; ++i) {
 / surrounding conditions, not those after the next clock tick when the cells around it
 / may have changed. For example, cells in the second row shouldn't be affected by cells
 / in the first row becoming alive or dead in the same pass of the for loops through the
-/ grid. */
+/ grid. We build the new board by looking at the old board cell by cell*/
 
 // Specify frequencies for squares
 let pitches = ["G", "A", "B", "D", "E"];
@@ -91,33 +91,12 @@ window.onload = () => {
     /* To improve performance, this has been refactored so that instead of playing multiple synths with the same pitch we adjust
     the volume of each pitch to acheive the same effect.
     */
-    synths = {
-        "G2": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "A2": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "B2": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "D2": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "E2": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "G3": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "A3": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "B3": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "D3": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "E3": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "G4": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "A4": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "B4": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "D4": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "E4": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "G5": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "A5": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "B5": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "D5": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "E5": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "G6": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "A6": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "B6": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "D6": new Tone.Synth({volume: baseVolume}).connect(envelope),
-        "E6": new Tone.Synth({volume: baseVolume}).connect(envelope)
-    };      
+    
+    for (let i = 0; i < octaves; i++) {
+        for (let j = 0; j < pitches.length; j++) {
+            synths[`${pitches[j]}${i + 2}`] = new Tone.Synth({volume: baseVolume}).connect(envelope);
+        }
+    }    
 
     for (let i = 0; i < COLUMNS; ++i) {
         let octave = 6 - i % octaves; // This will start with the highest pitches on the top row
@@ -188,16 +167,10 @@ function playNotes() {
 
     for (let [key, obValue] of Object.entries(liveSquares)) { // key= "G3", etc. obValue = 1+
         for (let i = 0; i < obValue; ++i)
-            synths[key].volume.value += 10;
-        
+            // for each duplicate pitch we increase the volume 
+            synths[key].volume.value *= 1.3;
         console.log("synths[key].volume.value: " + synths[key].volume.value);
     }
-
-    /*for (let [key, obValue] of Object.entries(liveSquares)) {
-        synths[key].volume.value += 10;
-        console.log("key: " + key);
-        console.log("synths[key].volume.value: " + synths[key].volume.value);
-    }*/
 
     let playCount = 0;
     for (let i = 0; i < COLUMNS; ++i) {

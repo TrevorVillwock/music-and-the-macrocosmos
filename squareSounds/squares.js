@@ -1,7 +1,12 @@
 // Trevor Villwock 2022-2023
 // Tone.js documentation: https://tonejs.github.io/docs/14.7.77/index.html
 
-// Declare variables here so they have the right scope
+/* We declare variables to hold html elements here so they have the right scope. Scope refers to what variables
+the computer can access as it steps through the program.  In modern JavaScript, a variable declared inside a set of curly braces cannot be
+accessed outside of those curly braces. We need to wait for the content
+of the DOM to load before we can get these elements but they need to have global scope so we declare them here
+without initializing them. Once the page has loaded the function at line 58 is executed which retrieves the 
+necessary html elements and assigns them to the variables. */
 let startButton;
 let volSlider;
 let vol;
@@ -11,6 +16,7 @@ let currentSquare; // Holds square object mouse is currently hovering over
 const frequencies = [200, 300, 400, 500, 600, 700, 800, 900]; // starting pitches of the squares in Hertz
 
 // Attack Decay Sustain Release (ADSR) Envelope used for all synthesizers
+// This will be passed to the Tone.Synth instrument
 let synthEnvelope = {
     attack: 0.5, // seconds it takes for the sound to fade in
     decay: 0, // seconds it takes for the sound to fade down from 
@@ -79,17 +85,17 @@ document.addEventListener("DOMContentLoaded", () => {
     https://www.quora.com/Why-are-higher-frequency-sounds-louder-than-lower-frequency-sounds
     */
     square1 = {
-        synth: new Tone.Synth({
+        synth: new Tone.Synth({ // Tone.js Synth instrument that will create sound
         oscillator: {
-            type: "sine",
-            volume: -5,
-            frequency: 200
+            type: "sine", // waveform
+            volume: -5, // volume
+            frequency: 200 // initial pitch
         },
-        envelope: synthEnvelope
+        envelope: synthEnvelope 
     }).connect(reverb),
         baseFrequency: frequencies[0],
         top: 0,
-        left: 0,
+        left: 0
     }
     
     square2 = {

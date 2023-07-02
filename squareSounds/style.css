@@ -1,8 +1,6 @@
 /* Element selectors */
-
 html {
   background-color: rgb(0, 0, 0);
-  flex: 1 1 auto;
 }
 
 /* The square class selector below provides the basic attributes that every square shares */
@@ -57,7 +55,6 @@ html {
 }
 
 /* The square id selectors below give each square its unique color and position */ 
-
 #square-1 {
   background-color: rgb(81, 79, 219);
   top: 0px;

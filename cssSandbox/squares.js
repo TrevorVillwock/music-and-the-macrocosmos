@@ -8,26 +8,12 @@ of the DOM to load before we can get these elements but they need to have global
 without initializing them. Once the page has loaded the function at line 58 is executed which retrieves the 
 necessary html elements and assigns them to the variables. */
 let startButton;
-let volSlider;
-let vol;
-let span;
-let reverb;
-let currentSquare; // Holds square object mouse is currently hovering over
+let currentSquare; // holds square object mouse is currently hovering over
 let square1html; // holds html for first square element
-let square1Xslider; // holds html for slider controlling square1 position
-const frequencies = [200, 300, 400, 500, 600, 700, 800, 900]; // starting pitches of the squares in Hertz
-
-// Attack Decay Sustain Release (ADSR) Envelope used for all synthesizers
-// This will be passed to the Tone.Synth instrument
-const synthEnvelope = {
-    attack: 0.5, // seconds it takes for the sound to fade in
-    decay: 0, // seconds it takes for the sound to fade down from 
-              // full volume (1.0) to the sustain level. If the decay is
-              // 0, the volume goes directly from 0 to the sustain level.
-    sustain: 0.4, // volume
-    release: 5 // seconds it takes for the sound to fade out once the mouse leaves
-               // the square
-};
+let square1Xslider; // holds html for slider controlling square1 horizontal position
+let square1XNum; // holds html for number displaying square1 horizontal position
+let square1Yslider; // holds html for slider controlling square1 vertical position
+let square1YNum; // holds html for number displaying square1 vertical position
 
 // Boolean flag determining whether mouse movement within the square affects pitch
 let controlPitch = false;
@@ -35,246 +21,21 @@ let controlPitch = false;
 document.addEventListener("DOMContentLoaded", () => {
     // Get necessary elements from html once page is loaded
     startButton = document.getElementById("startBtn");
-    span = document.getElementById("theSpan");
-    console.log("span:");
-    console.log(span);
-    volSlider = document.getElementById("volume-slider");
     square1html = document.getElementById("square-1");
     square1XSlider = document.getElementById("square-1-x-pos-slider");
-
-    vol = new Tone.Volume(-25).toDestination();
-    vol.volume.value = -100;
-    
-    // For some reason the Tone.Reverb object only has toMaster() and not toDestination()
-    // Reverb time initiated to 100 seconds
-    let reverb = new Tone.Reverb(100).connect(vol);
-    reverb.generate();
-
-    /* You might notice here that the volumes of the pitches are different. Why is this?
-    The human ear is naturally more sensitive to higher sounds, so they are percieved as slightly
-    louder than low sounds even if the measured amplitude (height) of the waves was the same.
-    Be careful not to confuse amplitude and frequency however. The amplitude of a wave is what we perceive 
-    as volume and is the measurement of a soundwave from crest to trough. On an x-y graph of a soundwave, this
-    is the vertical axis or y-axis. The frequency is the rate at which the wave oscillates and is measured in Hertz (Hz). 
-    One Hertz is one complete cycle of the wave per second, 2 is twice per second, etc.
-    
-    More explanation:
-    https://www.quora.com/Why-are-higher-frequency-sounds-louder-than-lower-frequency-sounds
-    */
-    square1 = {
-        synth: new Tone.Synth({ // Tone.js Synth instrument that will create sound
-        oscillator: {
-            type: "sine", // waveform
-            volume: -5, // volume
-            frequency: 200 // initial pitch
-        },
-        envelope: synthEnvelope 
-    }).connect(reverb),
-        baseFrequency: frequencies[0]
-    }
-    
-    square2 = {
-        synth: new Tone.Synth({
-            oscillator: {
-                type: "sine",
-                volume: -15,
-                frequency: 300
-            },
-            envelope: synthEnvelope
-        }).connect(reverb),
-        baseFrequency: frequencies[1]
-    }
-    
-    square3 = {
-        synth: new Tone.Synth({
-            oscillator: {
-                type: "sine",
-                volume: -15,
-                frequency: 400
-            },
-            envelope: synthEnvelope
-        }).connect(reverb),
-        baseFrequency: frequencies[2]
-    }
-    
-    square4 = {
-        synth: new Tone.Synth({
-            oscillator: {
-                type: "sine",
-                volume: -20,
-                frequency: 500
-            },
-            envelope: synthEnvelope
-        }).connect(reverb),
-        baseFrequency: frequencies[3]
-    }
-
-    square5 = {
-        synth: new Tone.Synth({
-            oscillator: {
-                type: "sine",
-                volume: -20,
-                frequency: 600
-            },
-            envelope: synthEnvelope
-        }).connect(reverb),
-        baseFrequency: frequencies[4]
-    }
-    
-    square6 = {
-        synth: new Tone.Synth({ 
-            oscillator: {
-                type: "sine",
-                volume: -20,
-                frequency: 700
-            }, 
-            envelope: synthEnvelope
-        }).connect(reverb),
-        baseFrequency: frequencies[5]
-    }
-    
-    square7 = {
-        synth: new Tone.Synth({
-            oscillator: {
-                type: "sine",
-                volume: -20,
-                frequency: 800
-            },
-            envelope: synthEnvelope
-        }).connect(reverb),
-        baseFrequency: frequencies[6]
-    }
-    
-    square8 = {
-        synth: new Tone.Synth({
-            oscillator: {
-                type: "sine",
-                volume: -20,
-                frequency: 900
-            },
-            envelope: synthEnvelope
-        }).connect(reverb),
-        baseFrequency: frequencies[7]
-    }
-
-    Tone.start();
-    Tone.Transport.start();
+    square1YSlider = document.getElementById("square-1-y-pos-slider");
 });
 
-document.onkeydown = (event) => {
-    console.log(event);
-    if (event.key == "Shift") {
-        controlPitch = !controlPitch;
-        console.log("changed control of pitch");
-    } else if (event.key == " ") {
-        console.log("reset pitches");
-        controlPitch = false;
-        square1.synth.frequency.value = square1.baseFrequency;
-        square2.synth.frequency.value = square2.baseFrequency;
-        square3.synth.frequency.value = square3.baseFrequency;
-        square4.synth.frequency.value = square4.baseFrequency;
-        square5.synth.frequency.value = square5.baseFrequency;
-        square6.synth.frequency.value = square6.baseFrequency;
-        square7.synth.frequency.value = square7.baseFrequency;
-        square8.synth.frequency.value = square8.baseFrequency;
-    } 
-}
-
 document.onmousemove = (event) => {
-    //console.log("horizontal position: " + event.clientX);
-    //console.log("vertical position: " + event.clientY);
-    if (controlPitch) {
-        console.log("controlling pitch");
-        currentSquare.synth.frequency.value = currentSquare.baseFrequency - (event.clientY - currentSquare.top) / 2;
-    }
-}
-
-// Set the time delay between when the user's mouse leaves a square
-// and the triggerRelease message is sent
-let releaseDelay = "+0.5"
-
-function playSquare(square) {
-    switch (square) {
-        case 1: currentSquare = square1;
-                square1.synth.triggerAttack(square1.synth.frequency.value);
-                break;
-        case 2: currentSquare = square2;
-                square2.synth.triggerAttack(square2.synth.frequency.value);
-                break;
-        case 3: currentSquare = square3;
-                square3.synth.triggerAttack(square3.synth.frequency.value);
-                break;
-        case 4: currentSquare = square4;
-                square4.synth.triggerAttack(square4.synth.frequency.value);
-                break;
-        case 5: currentSquare = square5;
-                square5.synth.triggerAttack(square5.synth.frequency.value);
-                break;
-        case 6: currentSquare = square6;
-                square6.synth.triggerAttack(square6.synth.frequency.value);
-                break;
-        case 7: currentSquare = square7;
-                square7.synth.triggerAttack(square7.synth.frequency.value);
-                break;
-        case 8: currentSquare = square8;
-                square8.synth.triggerAttack(square8.synth.frequency.value);
-                break;
-        default:
-                console.log("unexpected value");
-    }
-}
-
-function stopSquare(square) {
-    switch (square) {
-        case 1: square1.synth.triggerRelease(releaseDelay);
-                break;
-        case 2: square2.synth.triggerRelease(releaseDelay);
-                break;         
-        case 3: square3.synth.triggerRelease(releaseDelay);
-                break;
-        case 4: square4.synth.triggerRelease(releaseDelay);
-                break;
-        case 5: square5.synth.triggerRelease(releaseDelay);
-                break;
-        case 6: square6.synth.triggerRelease(releaseDelay);
-                break;
-        case 7: square7.synth.triggerRelease(releaseDelay);
-                break;
-        case 8: square8.synth.triggerRelease(releaseDelay);
-                break;
-        default: console.log("unexpected value");
-    }
-}
-
-function setVolume() {
     
-    /************************************************************
-    The html slider gives us values 0-200, which we map
-    to be between -100 and 0 dB because that's what the
-    Tone.js Volume object expects.
-    For an explanation of how decibels work check out this page:
-    https://ehomerecordingstudio.com/decibels/
-
-    *************************************************************/ 
-  
-    // log2(0) is undefined and will throw an error since there's no power of 2 that equals zero.
-    if (volSlider.value != 0) {
-      vol.volume.value = -1 * (100 - 13 * Math.log2(volSlider.value)) - 20;
-      console.log(vol.volume.value);
-    }
-}
-
-// Close "Click to start" window
-function closeModal() {
-    let modal = document.getElementById("popup");
-    console.log("modal:")
-    console.log(modal)
-    console.log("closing modal");
-    modal.style.display="none";
 }
 
 function setSquare1XPos() {
-    console.log(square1XSlider.value);
-    square1html.style.top = square1XSlider.value + "px";  
+    square1html.style.left = square1XSlider.value + "px";  
+    console.log(square1html.style.left);
+}
+
+function setSquare1YPos() {
+    square1html.style.top = square1YSlider.value + "px";  
     console.log(square1html.style.top);
 }

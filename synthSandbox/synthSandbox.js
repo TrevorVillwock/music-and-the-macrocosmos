@@ -50,14 +50,16 @@ let noteLength = "+8n"; // in seconds
 let baseBpm = 50; // BPM set by speed slider; it will be randomly added to in random speed mode.
 
 // toDestination() connects the sound produced to your computer headphones/speakers
-const mainVol = new Tone.Volume(-100).toDestination();
 const sawSynth = new Tone.AMOscillator(100, "sawtooth64", "sine", 0.1);
 const filter = new Tone.Filter(2000, "lowpass");
 const delay = new Tone.FeedbackDelay("8n", 0.5);
-delay.maxDelay = 5;
+delay.maxDelay = 1;
+const mainVol = new Tone.Volume(-100).toDestination();
 
 // These lines create the "signal chain" of effects, which we can visualize like this:
 // synth ---> filter ---> delay ---> main volume
+//              |                        |
+//              |------------------------|
 sawSynth.connect(filter);
 filter.connect(delay);
 filter.connect(mainVol);

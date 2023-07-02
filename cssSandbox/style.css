@@ -1,8 +1,6 @@
 /* Element selectors */
-
 html {
   background-color: rgb(0, 0, 0);
-  flex: 1 1 auto;
 }
 
 /* The square class selector below provides the basic attributes that every square shares */
@@ -115,8 +113,13 @@ html {
   color: white;
 }
 
-#start-box {
-  text-align: center;
+/* Block vs. in-line elements: 
+#x-controls {
+  display: block;
+}
+
+#y-controls {
+  display: block;
 }
 
 /* uncomment the CSS below to add a red border to every html object */

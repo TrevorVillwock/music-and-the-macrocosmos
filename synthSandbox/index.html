@@ -37,7 +37,7 @@
                     <h2>Speed</h2>
                     <div class="speed-bar">
                         <input class="control-slider" type="range" min="50.0" max="500.0" value="50.0" id="speedSlider" oninput="setSpeed()">
-                        <input class="number-box" type="number" min="50" max="200" value="100" id="speedNumber" readonly>
+                        <input class="number-box" type="number" min="50" max="200" value="50" id="speedNumber" readonly>
                         <span>BPM</span>
                     </div>
                     <h2>Base Pitch (in Hertz)</h2>
@@ -49,7 +49,8 @@
                     </div>
                     <h2>Low Pass Filter Cutoff</h2>
                     <div>
-                        <input class="control-slider" type="range" min="1.0" max="14.3" step=0.01 value="10.6" id="cutoffSlider" oninput="setFilterCutoff()">
+                        <input class="control-slider" type="range" min="1.0" max="14.3" step=0.01 value="10.6" 
+                            id="cutoffSlider" oninput="setFilterCutoff()">
                         <input class="number-box" type="number" min="20" max="20000" value="1500" id="filterNumber" readonly>
                         <span>Hz</span>
                     </div>
@@ -67,21 +68,24 @@
                         </div>
                         <p>Range</p>
                         <div>
-                            <input type="range" min="1.0" max="2.0" step="0.01" value="0.0" id="vibratoRangeSlider" class="control-slider" oninput="setVibratoRange()">
+                            <input type="range" min="1.0" max="2.0" step="0.01" value="0.0" 
+                                id="vibratoRangeSlider" class="control-slider" oninput="setVibratoRange()">
                         </div>
                     </div>
                     <h2>Delay (Echo)</h2>
                     <div>
                         <p>Time</p>
                         <div id="delay">
-                            <input class="control-slider" type="range" min="0.1" max="1.0" step="0.01" value="0.5" id="delayTimeSlider" class="control-slider" oninput="setDelayTime()">
+                            <input class="control-slider" type="range" min="0.1" max="1.0" step="0.01" value="0.5" 
+                                id="delayTimeSlider" class="control-slider" oninput="setDelayTime()">
                         <div>
                             <input class="delay-number" type="number" min="20" max="20000" value="0.5" id="delayTimeNumber" readonly>
                             <span>Seconds</span>
                         </div>
                         <p>Feedback</p>
                         <div>
-                            <input class="control-slider" type="range" min="0.0" max="0.9" step="0.01" value="0.3" id="delayFeedbackSlider" class="control-slider" oninput="setDelayFeedback()">
+                            <input class="control-slider" type="range" min="0.0" max="0.9" step="0.01" value="0.3" 
+                                id="delayFeedbackSlider" class="control-slider" oninput="setDelayFeedback()">
                         </div>
                         <div>
                             <input class="delay-number" type="number" min="0.0" max="0.9" value="0.3" id="delayFeedbackNumber" readonly>
@@ -89,7 +93,8 @@
                         <p>Volume</p>
                         <div>
                             <div class="volume-bar">
-                                <input class="control-slider" type="range" min="0.0" max="1.0" value="0.5" step="0.01" id="delayVolumeSlider" class="control-slider" oninput="setDelayVolume()">
+                                <input class="control-slider" type="range" min="0.0" max="1.0" value="0.5" step="0.01" 
+                                    id="delayVolumeSlider" class="control-slider" oninput="setDelayVolume()">
                             </div>
                         </div>
                     </div>
